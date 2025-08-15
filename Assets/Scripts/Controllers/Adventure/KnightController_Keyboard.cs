@@ -27,6 +27,7 @@ namespace Knight.Adventure
         private CapsuleCollider2D _collider;
 
         private Vector3 _inputDir;
+        private AudioClip _audioClip;
 
         private bool _isDead;
         private bool _isGround;
@@ -74,15 +75,22 @@ namespace Knight.Adventure
                 return;
             }
             
+            EndCombo();
             Player.GetInstance().TakeDamage(damage);
             hpBar.fillAmount = Player.GetInstance().GetHpRatio();
             _animator.SetTrigger("Hit");
         }
 
         #region 이벤트 함수
-        void Start()
+        private void Start()
         {
             _isBlocked = false;
+            
+            _isDead = false;
+            _isGround = false;
+            _isAttack = false;
+            _isCombo = false;
+            _isLadder = false;
             
             transform.position = _initPosition;
             transform.localScale = _initScale;
@@ -92,6 +100,7 @@ namespace Knight.Adventure
             _collider = GetComponent<CapsuleCollider2D>();
             
             hpBar.fillAmount = Player.GetInstance().GetHpRatio();
+            _audioClip = Resources.Load<AudioClip>(Define.GAMEOVER_PATH);
         }
 
         private void Update()       // 일반적인 작업
@@ -106,7 +115,7 @@ namespace Knight.Adventure
             Move();
         }
 
-        void OnCollisionEnter2D(Collision2D other)
+        private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Ground"))
             {
@@ -126,31 +135,32 @@ namespace Knight.Adventure
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Monster"))
+            switch (other.gameObject.tag)
             {
-                // TODO 몬스터 데미지
-                other.gameObject
-                    .GetComponent<BaseMonster>()
-                    .TakeDamage(Player.GetInstance().GetDamage());
-                other.gameObject.GetComponent<Animator>().SetTrigger("Hit");
-
-                if (_isCombo)
+                case "Monster":
                 {
-                    _isAttack = false;
-                    _isCombo = false;
+                    other
+                        .gameObject
+                        .GetComponent<BaseMonster>()
+                        .TakeDamage(Player.GetInstance().GetDamage());
+
+                    if (_isCombo)
+                    {
+                        _isAttack = false;
+                        _isCombo = false;
+                    }
+
+                    var scaleX = transform.localScale.x * -1;
+                    other.gameObject.transform.localScale = new Vector3(scaleX, 1, 1);
+                    break;
                 }
-
-                // TODO 방향 맞추고 튕기기(몬스터는 무조건 튕기기)
-                var scaleX = transform.localScale.x * -1;
-                other.gameObject.transform.localScale = new Vector3(scaleX, 1, 1);
-                return;
-            }
-
-            if (other.CompareTag("Ladder"))
-            {
-                _isLadder = true;
-                _rigidbody.gravityScale = 0f;
-                _rigidbody.linearVelocity = Vector2.zero;
+                case "Ladder":
+                {
+                    _isLadder = true;
+                    _rigidbody.gravityScale = 0f;
+                    _rigidbody.linearVelocity = Vector2.zero;
+                    break;
+                }
             }
         }
 
@@ -215,6 +225,7 @@ namespace Knight.Adventure
             
             if (Input.GetKeyDown(KeyCode.Space) && _isGround)
             {
+                EndCombo();
                 _animator.SetTrigger("Jump");
                 _rigidbody.AddForceY(Player.GetInstance().GetJumpPower(), ForceMode2D.Impulse);
             }
@@ -225,13 +236,14 @@ namespace Knight.Adventure
             if (_isDead)
                 return;
             
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                Debug.Log($"공격 : {_isAttack}");
                 if (!_isAttack)
                 {
                     _isAttack = true;
-                    Player.GetInstance().SetDamage(3f);
+                    Player
+                        .GetInstance()
+                        .SetDamage(3f);
                     _animator.SetTrigger("Attack");
                     return;
                 }
@@ -243,8 +255,20 @@ namespace Knight.Adventure
         private IEnumerator Death(BasePlayer player)
         {
             _animator.SetTrigger("Death");
+            
+            SoundManager
+                .GetInstance()
+                .StopBGMSound();
+            
+            SoundManager
+                .GetInstance()
+                .PlaySound(Define.SoundType.Event, _audioClip);
 
-            yield return new WaitForSeconds(2f); 
+            yield return new WaitForSeconds(1f); 
+            
+            Player
+                .GetInstance()
+                .PrepareTownRespawn();
             
             player.UpdatePosition(position, scale);
             SceneManager.LoadScene((int)Define.SceneType.Town);

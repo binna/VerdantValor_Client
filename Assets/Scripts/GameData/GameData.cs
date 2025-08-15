@@ -5,6 +5,8 @@ namespace Knight
 {
     public class GameData : MonoBehaviour
     {
+        private static bool _isDataInit;
+        
         public static Dictionary<int, Item> items = new();
         public static Dictionary<int, ShopItem> shopItems = new();
 
@@ -12,6 +14,11 @@ namespace Knight
 
         public static void Init()
         {
+            if (_isDataInit)
+                return;
+
+            _isDataInit = true;
+            
             #region item, shopItem 데이터 세팅
             var item = new Item(1, Define.ItemType.PotionHp, "RedPotion", 10);
             var shopItem = new ShopItem(

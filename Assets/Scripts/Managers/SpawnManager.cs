@@ -40,25 +40,27 @@ namespace Knight
 
         private IEnumerator Start()
         {
-            // 몬스터 스폰
             while (true)
             {
                 // TODO 이거 스폰 시간도 랜덤하게 하기
                 yield return new WaitForSeconds(3f);
-                
-                if (_monsterCount++ < monsterLimit)
-                {
-                    while (true)
-                    {
-                        var monsterIdx = Random.Range(0, _monsters.Length);
-                        var monster = _monsters[monsterIdx];
 
-                        if (monster.gameObject.activeSelf)
-                            continue;
-                        
-                        StartCoroutine(monster.SpawnMonster());
-                        break;
-                    }
+                Debug.Log($">> 검사 : {_monsterCount}/{_monsters.Length}");
+                if (_monsterCount >= monsterLimit)
+                    yield return null;
+
+                _monsterCount++;
+
+                while (true)
+                {
+                    var monsterIdx = Random.Range(0, _monsters.Length);
+                    var monster = _monsters[monsterIdx];
+            
+                    if (monster.gameObject.activeSelf)
+                        continue;
+                    
+                    StartCoroutine(monster.SpawnMonster());
+                    break;
                 }
             }
         }

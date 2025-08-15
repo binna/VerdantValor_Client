@@ -89,6 +89,8 @@ namespace Knight
         public const string TOWN_BGM_PATH = "Sounds/TownBGM";
         public const string ADVENTURE_BGM_PATH = "Sounds/AdventureBGM";
         public const string PORTAL_PATH = "Sounds/Portal";
+        public const string GAMEOVER_PATH = "Sounds/Gameover";
+        public const string MONSTER_DIE_PATH = "Sounds/MonsterDie";
         
         // speed
         public const float DIALOG_TYPING_SPEED = 0.05f;

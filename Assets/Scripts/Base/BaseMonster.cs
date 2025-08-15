@@ -40,6 +40,8 @@ namespace Knight
         protected Transform _playerTransform;
         protected Collider2D _collider2D;
         
+        private AudioClip _audioClip;
+        
         protected float _toMonsterDistance;
         protected bool _isTrace;
         protected bool _isDead;
@@ -53,7 +55,7 @@ namespace Knight
         {
             _hp -= damage;
             hpBar.fillAmount = _hp / HP;
-
+            
             if (_hp <= 0)
                 Death();
         }
@@ -88,13 +90,13 @@ namespace Knight
             
             _collider2D.enabled = false;
 
-            // TODO ================================
             _hp = HP;
             hpBar.fillAmount = _hp / HP;
 
             _isTrace = false;
             _isDead = false;
-            /////////////////////////////////////////
+            
+            _audioClip = Resources.Load<AudioClip>(Define.MONSTER_DIE_PATH);
         }
        
         private void Update()
@@ -153,12 +155,18 @@ namespace Knight
             _isDead = true;
             _animator.SetTrigger("Death");
             
+            SoundManager
+                .GetInstance()
+                .PlaySound(Define.SoundType.Event, _audioClip);
+            
             // TODO 아이템 드랍
 
             _collider2D.enabled = false;
             gameObject.SetActive(false);
             
-            SpawnManager.GetInstance().DeadMonster();
+            SpawnManager
+                .GetInstance()
+                .DeadMonster();
         }
     }
 }

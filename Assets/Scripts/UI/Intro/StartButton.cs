@@ -37,7 +37,6 @@ namespace Knight.Intro
 
             var id = _idInputField.text;
             
-            // TODO 유저 정보 검색하고 세팅하는 로직 하는 부분 필요
             #region 데이터 세팅
             GameData.Init();
 
@@ -48,7 +47,7 @@ namespace Knight.Intro
             myItems[3] = GameData.items[2];
             myItems[4] = GameData.items[2];
 
-            Player.GetInstance().Init(
+            Player.GetInstance().InitData(
                 myItems,
                 id, 1000, 150, 100,
                 50.5f, 3f, 4f, 12f);

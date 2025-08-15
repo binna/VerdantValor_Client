@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Knight.Town
 {
@@ -12,32 +11,24 @@ namespace Knight.Town
                 .PlaySound(
                     Define.SoundType.Bgm, 
                     Resources.Load<AudioClip>(Define.TOWN_BGM_PATH));
-            
+
+            #region 상점 데이터 세팅
             var shopItemIcons = UIManager
                 .GetInstance()
                 .FindUIComponentsByName<ShopItemIcon>($"{Define.UiName.Shop}");
+
+            var showItemIconCount = shopItemIcons.Length;
             
-            for (int i = 0; i < shopItemIcons.Length; i++)
+            for (var i = 0; i < showItemIconCount; i++)
             {
                 if (GameData.shopItems.TryGetValue(i + 1, out var shopItem))
                 {
                     shopItemIcons[i].Init(shopItem);
                 }
             }
+            #endregion
             
-            Player.GetInstance().SetInventoryInit();
-            Player.GetInstance().SetHUD(
-                    UIManager
-                        .GetInstance()
-                        .FindUIComponentByName<TMP_Text>($"{Define.UiName.HUD}", "Txt_Id"),
-                    UIManager
-                        .GetInstance()
-                        .FindUIComponentByName<TMP_Text>($"{Define.UiName.HUD}", "Txt_Level"),
-                    UIManager
-                        .GetInstance()
-                        .FindUIComponentByName<TMP_Text>($"{Define.UiName.HUD}", "Txt_Gold")
-                );
-            Player.GetInstance().SetHUDData();
+            Player.GetInstance().InitHUD();
         }
     }
 }
