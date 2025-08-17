@@ -236,7 +236,7 @@ namespace Knight.Adventure
             if (_isDead)
                 return;
             
-            if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.Z))
             {
                 if (!_isAttack)
                 {
