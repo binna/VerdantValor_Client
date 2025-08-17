@@ -9,15 +9,11 @@ namespace Knight
         [SerializeField] 
         private GameObject monsterRoot;
         
-        [SerializeField]
-        private int monsterLimit = 10;
-        
         private BaseMonster[] _monsters;
         
         private int _monsterCount;
         
         private static SpawnManager _instance;
-        
         public static SpawnManager GetInstance() => _instance;
 
         public void DeadMonster()
@@ -30,24 +26,21 @@ namespace Knight
         {
             _instance = this;
             
-            var monstersRoot = GameObject.Find("Monsters");
+            var monstersRoot = GameObject.Find(Define.GameObjectName.SPAWN_NAME);
 
             _monsters = monstersRoot
                 .GetComponentsInChildren<BaseMonster>(true);
-            
-            Debug.Log($"{_monsters.Length}");
         }
 
         private IEnumerator Start()
         {
             while (true)
             {
-                // TODO 이거 스폰 시간도 랜덤하게 하기
-                yield return new WaitForSeconds(3f);
+                var spawnTime = Random.Range(3f, 30f);
+                yield return new WaitForSeconds(spawnTime);
 
-                Debug.Log($">> 검사 : {_monsterCount}/{_monsters.Length}");
-                if (_monsterCount >= monsterLimit)
-                    yield return null;
+                if (_monsterCount >= Define.MONSTER_LIMIT)
+                    continue;
 
                 _monsterCount++;
 

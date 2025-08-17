@@ -9,7 +9,7 @@ namespace Knight.Town
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag($"{Define.Tag.Player}"))
+            if (other.CompareTag(Define.Tag.PLAYER))
             {
                 UIManager.GetInstance().Show(popupName.ToString());
             }
@@ -17,7 +17,7 @@ namespace Knight.Town
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareTag($"{Define.Tag.Player}"))
+            if (other.CompareTag(Define.Tag.PLAYER))
             {
                 UIManager.GetInstance().Hide(popupName.ToString());
             }

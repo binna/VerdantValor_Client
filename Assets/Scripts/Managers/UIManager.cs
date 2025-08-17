@@ -7,12 +7,11 @@ namespace Knight
 {
     public class UIManager : MonoBehaviour
     {
-        private Transform _uiRoot;
-        
         private readonly Dictionary<string, GameObject> _uiMap = new();
         
+        private Transform _uiRoot;
+        
         private static UIManager _instance;
-
         public static UIManager GetInstance() => _instance;
 
         public GameObject FindUIByName(string uiName)
@@ -72,7 +71,7 @@ namespace Knight
             popup.SetActive(true);
             foreach (var text in texts)
             {
-                if (!text.gameObject.name.Equals("Txt_Message"))
+                if (!text.gameObject.name.Equals(Define.UiObjectName.TXT_MESSAGE))
                     continue;
                 
                 text.text = message;
@@ -101,7 +100,7 @@ namespace Knight
 
                 foreach (var button in buttons)
                 {
-                    if (button.gameObject.name.Equals(Define.UiObjectNames.EXIT_BUTTON))
+                    if (button.gameObject.name.Equals(Define.UiObjectName.EXIT_BUTTON))
                     {
                         button
                             .onClick
@@ -109,7 +108,7 @@ namespace Knight
                         continue;
                     }
 
-                    if (button.gameObject.name.Contains(Define.UiObjectNames.ENTER_BUTTON))
+                    if (button.gameObject.name.Contains(Define.UiObjectName.ENTER_BUTTON))
                     {
                         enterButtons.Add(button);
                     }
@@ -123,7 +122,7 @@ namespace Knight
                     .AddListener(() =>
                         Show(
                             enterButton.gameObject.name.Replace(
-                                Define.UiObjectNames.ENTER_BUTTON, "")));
+                                Define.UiObjectName.ENTER_BUTTON, "")));
             }
         }
         #endregion

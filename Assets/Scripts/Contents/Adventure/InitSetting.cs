@@ -12,6 +12,7 @@ namespace Knight.Adventure
                     Define.SoundType.Bgm, 
                     Resources.Load<AudioClip>(Define.ADVENTURE_BGM_PATH));
 
+            // TODO
             #region 삭제할 것
             GameData.Init();
             

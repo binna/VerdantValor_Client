@@ -5,10 +5,10 @@ namespace Knight
 {
     public class GameData : MonoBehaviour
     {
-        private static bool _isDataInit;
-        
         public static Dictionary<int, Item> items = new();
         public static Dictionary<int, ShopItem> shopItems = new();
+        
+        private static bool _isDataInit;
 
         private bool isOpem = false;
 

@@ -50,13 +50,13 @@ AnimatorController:
   m_Name: Knight_Joystick
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: JoystickX
+  - m_Name: PositionX
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: JoystickY
+  - m_Name: PositionY
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -160,8 +160,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: JoystickX
     m_Mirror: 0
-  m_BlendParameter: JoystickX
-  m_BlendParameterY: JoystickY
+  m_BlendParameter: PositionX
+  m_BlendParameterY: PositionY
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1

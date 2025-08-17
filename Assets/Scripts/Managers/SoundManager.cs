@@ -8,16 +8,15 @@ namespace Knight
         private AudioSource _eventAudio;
         
         private static SoundManager _instance;
-
         public static SoundManager GetInstance()
         {
             if (_instance == null)
             {
-                GameObject soundManager = GameObject.Find(Define.GameObjectNames.SOUND_MANAGER);
+                GameObject soundManager = GameObject.Find(Define.GameObjectName.SOUND_MANAGER);
                 
                 if (soundManager == null)
                 {
-                    soundManager = new GameObject(Define.GameObjectNames.SOUND_MANAGER);
+                    soundManager = new GameObject(Define.GameObjectName.SOUND_MANAGER);
                     soundManager.AddComponent<SoundManager>();
                 }
                 
@@ -46,10 +45,10 @@ namespace Knight
             {
                 switch (child.gameObject.name)
                 {
-                    case Define.GameObjectNames.BGM_AUDIO:
+                    case Define.GameObjectName.BGM_AUDIO:
                         _bgmAudio = child.GetComponent<AudioSource>();
                         break;
-                    case Define.GameObjectNames.EVENT_AUDIO:
+                    case Define.GameObjectName.EVENT_AUDIO:
                         _eventAudio = child.GetComponent<AudioSource>();
                         break;
                 }
@@ -57,7 +56,7 @@ namespace Knight
             
             if (_bgmAudio == null)
             {
-                var audioSource = new GameObject(Define.GameObjectNames.BGM_AUDIO);
+                var audioSource = new GameObject(Define.GameObjectName.BGM_AUDIO);
                 audioSource.transform.SetParent(transform);
                 
                 _bgmAudio = audioSource.AddComponent<AudioSource>();
@@ -66,7 +65,7 @@ namespace Knight
 
             if (_eventAudio == null)
             {
-                var audioSource = new GameObject(Define.GameObjectNames.EVENT_AUDIO);
+                var audioSource = new GameObject(Define.GameObjectName.EVENT_AUDIO);
                 audioSource.transform.SetParent(transform);
                 
                 _eventAudio = audioSource.AddComponent<AudioSource>();

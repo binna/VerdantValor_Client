@@ -1,62 +1,53 @@
 ﻿using System.Collections;
+using Knight.Adventure;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Knight
 {
     public abstract class BaseMonster : MonoBehaviour
     {
-        public enum State
-        {
-            IDLE,
-            PATROL,
-            TRACE,
-            ATTACK
-        }
-        
         [SerializeField] 
         protected Image hpBar;
         
         [SerializeField]
-        private State state = State.IDLE;
-
-        [SerializeField] 
-        protected float _hp = 10f;
+        private Define.MonsterState state = Define.MonsterState.Idle;
         
-        [SerializeField] 
-        protected float _speed = 3f;
+        private float _hp;
+        private float _traceDistance;
+        private float _attackDistance;
+       
+        private float _currentHp;
+        private float _speed;
+        private float _attackTime;
+        private float _atkDamage;
         
-        [SerializeField]
-        public float _attackTime = 2f;
+        private float _timer;
+        private float _idleTime; 
+        private float _patrolTime;
+        private bool _isAttack;
 
-        [SerializeField] 
-        protected float atkDamage = 5f;
+        private int _xMin;
+        private int _xMax;
         
-        private const float HP = 10f;
-        private bool _isFirst = true;
-
-        protected Animator _animator;
-        protected Rigidbody2D _rigidbody;
-        protected Transform _playerTransform;
-        protected Collider2D _collider2D;
+        private Animator _animator;
+        private Transform _playerTransform;
+        private Collider2D _collider2D;
         
         private AudioClip _audioClip;
         
-        protected float _toMonsterDistance;
-        protected bool _isTrace;
-        protected bool _isDead;
-        
-        protected abstract void Idle();
-        protected abstract void Patrol();
-        protected abstract void Trace();
-        protected abstract void Attack();
+        private float _toMonsterDistance;
+        private bool _isTrace;
+
+        protected abstract void Start();
 
         public void TakeDamage(float damage)
         {
-            _hp -= damage;
-            hpBar.fillAmount = _hp / HP;
+            _currentHp -= damage;
+            hpBar.fillAmount = _currentHp / _hp;
             
-            if (_hp <= 0)
+            if (_currentHp <= 0)
                 Death();
         }
 
@@ -67,45 +58,51 @@ namespace Knight
             yield return null;
             
             _collider2D.enabled = true;
-            // TODO 몬스터 정보 초기화 필요
-        }
-
-        protected void ChangeState(State newState)
-        {
-            state = newState;
         }
         
-        protected void Init(float hp, float speed, float attackTime, float damage)
+        protected void Init(
+            float hp, float speed, float attackTime, float damage, 
+            float traceDistance, float attackDistance)
         {
             _hp = hp;
+            _traceDistance = traceDistance;
+            _attackDistance = attackDistance;
+            
+            _currentHp = _hp;
             _speed = speed;
             _attackTime = attackTime;
-            _attackTime = damage;
+            _atkDamage = damage;
 
-            _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-            
+            _playerTransform = GameObject
+                .FindGameObjectWithTag(Define.Tag.PLAYER)
+                .transform;
             _animator = GetComponent<Animator>();
-            _rigidbody = GetComponent<Rigidbody2D>();
             _collider2D = GetComponent<Collider2D>();
             
             _collider2D.enabled = false;
 
-            _hp = HP;
-            hpBar.fillAmount = _hp / HP;
-
+            _currentHp = _hp;
+            hpBar.fillAmount = _currentHp / _hp;
             _isTrace = false;
-            _isDead = false;
             
             _audioClip = Resources.Load<AudioClip>(Define.MONSTER_DIE_PATH);
+
+            RandomPosition();
         }
-       
+
+        #region 이벤트 함수
+        private void OnEnable()
+        {
+            _currentHp = _hp;
+            RandomPosition();
+        }
+        
         private void Update()
         {
             // 두 위치(플레이어 -> 몬스터) 간의 벡터(방향 + 거리 포함)
             var toMonster = transform.position - _playerTransform.position;
             
-            // 거리 추출
-            // 항상 양수
+            // 거리 추출, 항상 양수
             _toMonsterDistance = toMonster.magnitude;
 
             // 정규화된 방향 벡터(길이는 1, 방향 정보만 유지)
@@ -123,37 +120,146 @@ namespace Knight
             
             switch (state)
             {
-                case State.IDLE:
+                case Define.MonsterState.Idle:
                     Idle();
                     break;
-                case State.PATROL:
-                    // 정찰 기능
+                case Define.MonsterState.Patrol:
                     Patrol();
                     break;
-                case State.TRACE:
-                    // 추적 기능
+                case Define.MonsterState.Trace:
                     Trace();
                     break;
-                case State.ATTACK:
+                case Define.MonsterState.Attack:
                     Attack();
                     break;
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag(Define.Tag.PLAYER))
+            {
+                other
+                    .gameObject
+                    .GetComponent<KnightControllerKeyboard>()
+                    .TakeDamage(_atkDamage, other.GetComponent<BasePlayer>());
+                
+                // TODO 방향 맞추고 튕기기(유저는 튕길지는 좀 더 고민해보기)
+                var scaleX = transform.localScale.x * -1;
+                other.gameObject.transform.localScale = new Vector3(scaleX, 1, 1);
+            }
+        }
+        
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.CompareTag("Ground") 
-                || other.gameObject.CompareTag("Player"))
+            if (other.gameObject.CompareTag(Define.Tag.GROUND) 
+                || other.gameObject.CompareTag(Define.Tag.PLAYER))
                 return;
             
             var scaleX = transform.localScale.x * -1;
             transform.localScale = new Vector3(scaleX, 1f, 1f);
         }
+        #endregion
+
+        private void ChangeState(Define.MonsterState newState)
+        {
+            state = newState;
+        }
+        
+        private void Idle()
+        {
+            _timer += Time.deltaTime;
+
+            // 정찰
+            if (_timer >= _idleTime)
+            {
+                var scaleX = Random.Range(0, 2) == 1? 1 : -1;
+                transform.localScale = new Vector3(scaleX, 1, 1);
+                
+                _timer = 0f;
+                _patrolTime = Random.Range(1f, 5f);
+                _animator.SetBool(Define.AnimatorParameter.isRun, true);
+                
+                ChangeState(Define.MonsterState.Patrol);
+            }
+            
+            // 추격
+            if (_toMonsterDistance <= _traceDistance && _isTrace)
+            {
+                _timer = 0f;
+                _animator.SetBool(Define.AnimatorParameter.isRun, true);
+                
+                ChangeState(Define.MonsterState.Trace);
+            }
+        }
+        
+        private void Patrol()
+        {
+            var x = transform.position.x;
+            
+            if (x < _xMin)
+                transform.localScale = new Vector3(1, 1, 1);
+            
+            else if (_xMax < x)
+                transform.localScale = new Vector3(-1, 1, 1);
+            
+            transform.position += 
+                Vector3.right * transform.localScale.x * _speed * Time.deltaTime;
+            
+            _timer += Time.deltaTime;
+            
+            // 정찰 시간 끝
+            if (_timer >= _patrolTime)
+            {
+                _timer = 0f;
+                _idleTime = Random.Range(1f, 5f);
+                _animator
+                    .SetBool(Define.AnimatorParameter.isRun, false);
+                ChangeState(Define.MonsterState.Idle);
+                return;
+            }
+            
+            // 추격
+            if (_toMonsterDistance <= _traceDistance && _isTrace)
+            {
+                _timer = 0f;
+                ChangeState(Define.MonsterState.Trace);
+            }
+        }
+        
+        private void Trace()
+        {
+            // 몬스터 -> 플레이어 방향
+            var toPlayer = (_playerTransform.position - transform.position).normalized;
+            var scaleX = toPlayer.x < 0f ? -1f : 1f;
+            
+            transform.position += 
+                Vector3.right * scaleX * _speed * Time.deltaTime;
+            transform.localScale = new Vector3(scaleX, 1f, 1f);
+            
+            if (_toMonsterDistance > _traceDistance)
+            {
+                _animator.SetBool(Define.AnimatorParameter.isRun, false);
+                ChangeState(Define.MonsterState.Idle);
+                return;
+            }
+            
+            if (_toMonsterDistance < _attackDistance)
+            {
+                ChangeState(Define.MonsterState.Attack);
+            }
+        }
+        
+        private void Attack()
+        {
+            if (!_isAttack)
+                StartCoroutine(AttackRoutine());
+        }
         
         private void Death()
         {
-            _isDead = true;
-            _animator.SetTrigger("Death");
+            _animator
+                .SetTrigger(Define.AnimatorParameter.death);
             
             SoundManager
                 .GetInstance()
@@ -167,6 +273,49 @@ namespace Knight
             SpawnManager
                 .GetInstance()
                 .DeadMonster();
+        }
+        
+        private void RandomPosition()
+        {
+            var idx = Random.Range(0, Define.monsterPosCnt);
+            var area = Define.monsterPositions[idx];
+            var y = area.yPos;
+            
+            _xMin = area.xMin;
+            _xMax = area.xMax;
+            
+            var spawnX = Random.Range(_xMin, _xMax);
+            transform.position = new Vector3(spawnX, y, 0f);
+        }
+
+        private IEnumerator AttackRoutine()
+        {
+            _isAttack = true;
+            _animator
+                .SetTrigger(Define.AnimatorParameter.attack);
+
+            // 트리거 설정 직후에는 Animator의 상태 전환이 아직 적용되지 않았을 수 있음
+            // 1프레임 대기 후 상태 정보를 가져오는 것이 안전함
+            yield return null;
+            
+            var currentAnimationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(currentAnimationLength);
+            
+            _animator.SetBool(Define.AnimatorParameter.isRun, false);
+
+            // 벡터 연산의 방향성은 끝점 - 시작점 이다
+            // 종점(플레이어) - 시작점(몬스터)
+            // 몬스터 -> 플레이어 방향
+            var toPlayer = (_playerTransform.position - transform.position).normalized;
+            var scaleX = toPlayer.x > 0 ? 1 : -1;
+            transform.localScale = new Vector3(scaleX, 1, 1);
+
+            yield return new WaitForSeconds(_attackTime - 1f);
+            
+            _isAttack = false;
+            _animator
+                .SetBool(Define.AnimatorParameter.isRun, true);
+            ChangeState(Define.MonsterState.Idle);
         }
     }
 }

@@ -16,22 +16,22 @@ namespace Knight
             _bgmVolume = UIManager
                 .GetInstance()
                 .FindUIComponentByName<Slider>(
-                    $"{Define.UiName.Setting}", Define.UiObjectNames.SLIDER_BGM_VOLUME);
+                    $"{Define.UiName.Setting}", Define.UiObjectName.SLIDER_BGM_VOLUME);
                 
             _bgmMute = UIManager
                 .GetInstance()
                 .FindUIComponentByName<Toggle>(
-                    $"{Define.UiName.Setting}", Define.UiObjectNames.TOGGLE_BGM_MUTE);
+                    $"{Define.UiName.Setting}", Define.UiObjectName.TOGGLE_BGM_MUTE);
             
             _eventVolume = UIManager
                 .GetInstance()
                 .FindUIComponentByName<Slider>(
-                    $"{Define.UiName.Setting}", Define.UiObjectNames.SLIDER_EVENT_VOLUME);
+                    $"{Define.UiName.Setting}", Define.UiObjectName.SLIDER_EVENT_VOLUME);
                 
             _eventMute = UIManager
                 .GetInstance()
                 .FindUIComponentByName<Toggle>(
-                    $"{Define.UiName.Setting}", Define.UiObjectNames.TOGGLE_EVENT_MUTE);
+                    $"{Define.UiName.Setting}", Define.UiObjectName.TOGGLE_EVENT_MUTE);
             
             _bgmVolume.value = SoundManager.GetInstance().GetBgmAudio().volume;
             _eventVolume.value = SoundManager.GetInstance().GetEventAudio().volume;

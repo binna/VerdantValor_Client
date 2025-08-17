@@ -39,12 +39,12 @@ namespace Knight
             _loadingImage = UIManager
                 .GetInstance()
                 .FindUIComponentByName<Image>(
-                    $"{Define.UiName.Loading}", Define.UiObjectNames.IMG_BACKGROUND).gameObject;
+                    $"{Define.UiName.Loading}", Define.UiObjectName.IMG_BACKGROUND).gameObject;
             
             _progressBar = UIManager
                 .GetInstance()
                 .FindUIComponentByName<Image>(
-                    $"{Define.UiName.Loading}", Define.UiObjectNames.IMG_PROGRESS_BAR);
+                    $"{Define.UiName.Loading}", Define.UiObjectName.IMG_PROGRESS_BAR);
 
             _audioClip = Resources.Load<AudioClip>(Define.PORTAL_PATH);
         }
@@ -55,7 +55,7 @@ namespace Knight
 
             player.BlockInput();
             
-            if (other.CompareTag($"{Define.Tag.Player}"))
+            if (other.CompareTag(Define.Tag.PLAYER))
             {
                 StartCoroutine(PortalRoutine());
             }

@@ -27,7 +27,7 @@ namespace Knight.Town
 
             foreach (var child in children)
             {
-                if (!child.name.Equals(Define.UiObjectNames.IMG_ICON))
+                if (!child.name.Equals(Define.UiObjectName.IMG_ICON))
                     continue;
                 
                 _icon = child;

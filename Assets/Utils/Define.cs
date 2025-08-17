@@ -1,7 +1,17 @@
+using UnityEngine;
+
 namespace Knight
 {
     public static class Define
     {
+        public enum MonsterState
+        {
+            Idle,
+            Patrol,
+            Trace,
+            Attack
+        }
+
         public enum ItemType
         {
             PotionHp,
@@ -35,18 +45,6 @@ namespace Knight
             Inventory,
             Alarm
         }
-        
-        public enum Tag
-        {
-            Untagged,
-            Respawn,
-            Finish,
-            EditorOnly,
-            MainCamera,
-            Player,
-            GameController,
-            Ladder
-        }
 
         public enum Layer : int
         {
@@ -56,14 +54,15 @@ namespace Knight
             Monster
         }
         
-        public static class GameObjectNames
+        public static class GameObjectName
         {
             public const string SOUND_MANAGER = "@SoundManager";
-            public const string BGM_AUDIO = "Bgm Audio";
-            public const string EVENT_AUDIO = "Event Audio";
+            public const string BGM_AUDIO = "BgmAudio";
+            public const string EVENT_AUDIO = "EventAudio";
+            public const string SPAWN_NAME = "Monsters";
         }
         
-        public static class UiObjectNames
+        public static class UiObjectName
         {
             public const string SLIDER_BGM_VOLUME = "Slider_BgmVolume";
             public const string TOGGLE_BGM_MUTE = "Toggle_BgmMute";
@@ -82,6 +81,34 @@ namespace Knight
             public const string TXT_ID = "Txt_Id";
             public const string TXT_LEVEL = "Txt_Level";
             public const string TXT_GOLD = "Txt_Gold";
+            public const string TXT_MESSAGE = "Txt_Message";
+        }
+        
+        public static class Tag
+        {
+            public const string UNTAGGED = "Untagged";
+            public const string RESPAWN = "Respawn";
+            public const string FINISH = "Finish";
+            public const string EDITOR_ONLY = "EditorOnly";
+            public const string MAIN_CAMERA = "MainCamera";
+            public const string PLAYER = "Player";
+            public const string GAME_CONTROLLER = "GameController";
+            public const string LADDER = "Ladder";
+            public const string MONSTER = "Monster";
+            public const string GROUND = "Ground";
+        }
+        
+        public static class AnimatorParameter
+        {
+            public static readonly int isGround = Animator.StringToHash("IsGround");
+            public static readonly int isCombo = Animator.StringToHash("IsCombo");
+            public static readonly int hit = Animator.StringToHash("Hit");
+            public static readonly int jump = Animator.StringToHash("Jump");
+            public static readonly int attack = Animator.StringToHash("Attack");
+            public static readonly int death = Animator.StringToHash("Death");
+            public static readonly int positionX = Animator.StringToHash("PositionX");
+            public static readonly int positionY = Animator.StringToHash("PositionY");
+            public static readonly int isRun = Animator.StringToHash("IsRun");
         }
         
         // Sounds
@@ -102,5 +129,23 @@ namespace Knight
         // Use
         public const int INVNETORY_COUNT = 20;
         public const int RECOVERY_HP = 1;
+        
+        // Etc
+        public const string HORIZONTAL = "Horizontal";
+        public const string VERTICAL = "Vertical";
+        
+        // Monster
+        public static MonsterSpawnArea[] monsterPositions =
+        {
+            new(-16, 16, -3),
+            new(3, 28, 31),
+            new(33, 50, 9),
+            new(60, 100, 9),
+            new(91, 102, 14),
+            new(49, 72, 14),
+            new(30, 42, 12),
+        };
+        public static readonly int monsterPosCnt = monsterPositions.Length;
+        public const int MONSTER_LIMIT = 15;
     }
 }

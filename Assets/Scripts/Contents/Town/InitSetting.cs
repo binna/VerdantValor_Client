@@ -12,6 +12,23 @@ namespace Knight.Town
                     Define.SoundType.Bgm, 
                     Resources.Load<AudioClip>(Define.TOWN_BGM_PATH));
 
+            // TODO
+            #region 삭제할 것
+            GameData.Init();
+            
+            var myItems = new Item[Define.INVNETORY_COUNT];
+            myItems[0] = GameData.items[1];
+            myItems[1] = GameData.items[1];
+            myItems[2] = GameData.items[2];
+            myItems[3] = GameData.items[2];
+            myItems[4] = GameData.items[2];
+            
+            Player.GetInstance().InitData(
+                myItems,
+                "shine94", 1000, 150, 100,
+                50.5f, 3f, 4f, 12f);
+            #endregion
+            
             #region 상점 데이터 세팅
             var shopItemIcons = UIManager
                 .GetInstance()

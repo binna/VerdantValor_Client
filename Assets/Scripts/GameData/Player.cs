@@ -76,15 +76,15 @@ namespace Knight
                 UIManager
                     .GetInstance()
                     .FindUIComponentByName<TMP_Text>(
-                        $"{Define.UiName.HUD}", Define.UiObjectNames.TXT_ID),
+                        $"{Define.UiName.HUD}", Define.UiObjectName.TXT_ID),
                 UIManager
                     .GetInstance()
                     .FindUIComponentByName<TMP_Text>(
-                        $"{Define.UiName.HUD}", Define.UiObjectNames.TXT_LEVEL),
+                        $"{Define.UiName.HUD}", Define.UiObjectName.TXT_LEVEL),
                 UIManager
                     .GetInstance()
                     .FindUIComponentByName<TMP_Text>(
-                        $"{Define.UiName.HUD}", Define.UiObjectNames.TXT_GOLD));
+                        $"{Define.UiName.HUD}", Define.UiObjectName.TXT_GOLD));
             SetHUDData();
         }
 

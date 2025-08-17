@@ -6,7 +6,7 @@ namespace Knight.Town
     public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         [SerializeField]
-        private KnightController_Joystick knightController;
+        private KnightControllerJoystick knightController;
 
         [SerializeField] 
         private GameObject backgroundUI;
