@@ -1,7 +1,16 @@
 # 🌿⚔️ Verdant Valor 
-> ✨ 신비로운 숲에서의 전투와 모험의 세계로!
 
 ![image](https://github.com/user-attachments/assets/9bacff69-a94f-4ae6-a570-01383085a5fc)
+
+---
+
+## 🌿 About the Title
+**Verdant Valor** = 🌿 Verdant (푸르른 숲, 생명력) + 🛡 Valor (용기, 전사의 용맹)  
+→ 자연 속에서 싸우는 기사들의 모험을 상징하는 이름
+
+---
+
+<br><br>
 
 <p align="center">
   <b>⚔️ 2D Action RPG – A Knight’s Adventure Unfolding in a Mysterious Forest 🌲</b> <br>
@@ -13,24 +22,37 @@
 </p>
 
 <br><br>
+
 <hr>
 
 ## 📑 Table of Contents
 
 1. 🎮 [Gameplay](#gameplay)
 2. 🧭 [Main Feature](#main-feature)
-3. 🛠️ [Tech Stack](#tech-stack)
-4. 🧪 [Technical](#technical)
-5. 🐞 [Known Issues & Solutions](#known-issues--solutions)
-6. 🎨 [Art Resources](#art-resources)
-7. 🎵 [Sound Resources](#sound-resources)
+3. 🧟 [Monster Balance](#monster-balance)
+4. 🛠️ [Tech Stack](#tech-stack)
+5. 🧪 [Technical](#technical)
+6. 🐞 [Known Issues & Solutions](#known-issues--solutions)
+7. 🎨 [Art Resources](#art-resources)
+8. 🎵 [Sound Resources](#sound-resources)
 
 <hr>
+
 <br><br>
 
 ## Gameplay
 - **A 2D RPG that begins in a peaceful village and unfolds into battles deep within a mysterious forest.**  
   _마을에서 여정을 시작해, 숲속 깊은 곳에서 펼쳐지는 전투를 담은 2D RPG_
+
+- **조작법**
+  - 공격: `Z`
+    
+  - 점프: `Space`
+    
+  - 이동: `←`, `→` (방향키)
+    
+  - 숙이기: `↓` (방향키)
+  
 <br><br>
 
 ## Main Feature
@@ -59,6 +81,17 @@
 
 9. **타일맵 기반 맵 디자인 (*Tilemap-Based Map Design*)**  
    Tilemap 시스템을 활용한 유연한 공간 설계
+
+<br><br>
+
+## Monster Balance
+
+| 몬스터       | HP   | Speed | Attack Time | Damage | Trace Distance | Attack Distance | 특징 |
+|--------------|------|-------|-------------|--------|----------------|-----------------|------|
+| FlyingEye    | 10f  | 3f    | 1.5f        | 1f     | 7f             | 1.5f            | 빠르고 자주 공격하지만 약함 |
+| Goblin       | 20f  | 2f    | 2f          | 3f     | 5f             | 1.2f            | 밸런스형, 다수일 때 위험 |
+| Mushroom     | 35f  | 0.8f  | 3f          | 2f     | 4f             | 1f              | 느리고 단단한 탱커 |
+| Skeleton     | 15f  | 1.5f  | 1.8f        | 4f     | 6f             | 1.3f            | 공격력 높지만 체력 약함 |
 
 <br><br>
 
@@ -125,11 +158,15 @@
 ## Sound Resources
 
 - [Pixabay](https://pixabay.com)
-  - [IntroBGM](https://pixabay.com/music/solo-instruments-magic-forest-318165/) → 인트로 배경 음악  
-  - [AdventureBGM](https://pixabay.com/music/upbeat-black-box-hypocrisy-112160/) → 전투 배경 음악  
-  - [Portal](https://pixabay.com/sound-effects/magic-teleport-whoosh-352764/) → 포탈 이동 소리  
+  - [IntroBGM](https://pixabay.com/music/solo-instruments-magic-forest-318165/) → 인트로 배경 음악
+    
+  - [AdventureBGM](https://pixabay.com/music/upbeat-black-box-hypocrisy-112160/) → 전투 배경 음악
+    
+  - [Portal](https://pixabay.com/sound-effects/magic-teleport-whoosh-352764/) → 포탈 이동 소리
+    
   - [Gameover](https://pixabay.com/sound-effects/8bit-lose-life-sound-wav-97245/) → 캐릭터 죽는 소리
-  - [MonsterDie](https://pixabay.com/sound-effects/super-deep-growl-86749/) → 몬스터 죽는 소리  
+  
+  - [MonsterDie](https://pixabay.com/sound-effects/super-deep-growl-86749/) → 몬스터 죽는 소리
   
 - Asset Store
   - [TownBGM](https://assetstore.unity.com/packages/audio/music/electronic/8-bit-rpg-adventure-music-pack-184726), Track: 04 Overworld → 마을 배경 음악  
