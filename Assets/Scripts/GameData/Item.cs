@@ -16,7 +16,8 @@
         }
         
         public string GetItemName() => _itemName;
-        public string GetDescription => $"{GetTypeDescription()} {_value}";
+        
+        public string GetDescription() => $"{GetTypeDescription()}({_value})";
 
         public void Use()
         {

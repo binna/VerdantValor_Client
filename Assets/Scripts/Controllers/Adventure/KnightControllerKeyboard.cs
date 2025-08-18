@@ -99,7 +99,9 @@ namespace Knight.Adventure
             _rigidbody = GetComponent<Rigidbody2D>();
             _collider = GetComponent<CapsuleCollider2D>();
             
+            Player.GetInstance().SetHpBar(hpBar);
             hpBar.fillAmount = Player.GetInstance().GetHpRatio();
+            
             _audioClip = Resources.Load<AudioClip>(Define.GAMEOVER_PATH);
         }
 

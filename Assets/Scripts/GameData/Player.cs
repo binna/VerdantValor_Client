@@ -110,18 +110,6 @@ namespace Knight
             return _currentHp / _hp;
         }
         
-        public int GetLevel()
-        {
-            return (_exp / 100) switch
-            {
-                0 => 1,
-                1 => 2,
-                2 => 3,
-                3 => 4,
-                _ => 5
-            };
-        }
-        
         public void SetDamage(float damage) => _atkDamage = damage;
         
         public void TakeDamage(float damage) => _currentHp -= damage;
@@ -153,8 +141,20 @@ namespace Knight
                     return;
             }
         }
+        
+        private int GetLevel()
+        {
+            return (_exp / 100) switch
+            {
+                0 => 1,
+                1 => 2,
+                2 => 3,
+                3 => 4,
+                _ => 5
+            };
+        }
 
-        public void SetInventoryInit()
+        private void SetInventoryInit()
         {
             _inventoryItemIcons = UIManager
                 .GetInstance()
@@ -163,20 +163,23 @@ namespace Knight
             for (var i = 0; i < Define.INVNETORY_COUNT; i++)
             {
                 if (_items[i] == null)
+                {
+                    _inventoryItemIcons[i].Init();
                     continue;
-                
+                }
+
                 _inventoryItemIcons[i].AddItem(_items[i]);
             }
         }
 
-        public void SetHUD(TMP_Text idText, TMP_Text levelText, TMP_Text goldText)
+        private void SetHUD(TMP_Text idText, TMP_Text levelText, TMP_Text goldText)
         {
             _idText = idText;
             _levelText = levelText;
             _goldText = goldText;
         }
         
-        public void SetHUDData()
+        private void SetHUDData()
         {
             _idText.text = _id;
             _levelText.text = $"{GetLevel()}";

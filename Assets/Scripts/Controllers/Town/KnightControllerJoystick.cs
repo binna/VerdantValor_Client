@@ -40,6 +40,7 @@ namespace Knight.Town
             _animator = GetComponent<Animator>();
             _rigidbody = GetComponent<Rigidbody2D>();
             
+            Player.GetInstance().SetHpBar(hpBar);
             hpBar.fillAmount = Player.GetInstance().GetHpRatio();
         }
 
