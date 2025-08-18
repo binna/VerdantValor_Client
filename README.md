@@ -100,8 +100,6 @@
   
 - `Art/Images/BattleProp` → ChatGPT
   
-- `Art/Images/Item` → [Asset Store](https://assetstore.unity.com/packages/2d/gui/icons/2d-pixel-item-asset-pack-99645)
-
 - `Art/Images/LoadingBackground` → [Asset Store](https://assetstore.unity.com/packages/2d/environments/background-for-mobile-games-portrait-2d-art-246460)
 
 - `Art/Images/Portal` → [Asset Store](https://assetstore.unity.com/packages/vfx/particles/free-quick-effects-vol-1-304424)
@@ -115,6 +113,8 @@
 - `Art/UI/Icon` → ChatGPT
  
 - `Art/UI/Joystick` → [Asset Store](https://assetstore.unity.com/packages/tools/input-management/simple-input-system-113033)
+
+- `Resources/Images/Item` → [Asset Store](https://assetstore.unity.com/packages/2d/gui/icons/2d-pixel-item-asset-pack-99645)
  
 - `캐릭터` → [itch.io](https://aamatniekss.itch.io/fantasy-knight-free-pixelart-animated-character)
  
