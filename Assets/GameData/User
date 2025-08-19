@@ -1,0 +1,136 @@
+{
+    "users": [
+        {
+            "items": [
+                {
+                    "id": 1,
+                    "type": 0,
+                    "name": "RedPotion",
+                    "value": 10
+                },
+                {
+                    "id": 1,
+                    "type": 0,
+                    "name": "RedPotion",
+                    "value": 10
+                },
+                {
+                    "id": 2,
+                    "type": 0,
+                    "name": "RedPotion",
+                    "value": 20
+                },
+                {
+                    "id": 2,
+                    "type": 0,
+                    "name": "RedPotion",
+                    "value": 20
+                },
+                {
+                    "id": 2,
+                    "type": 0,
+                    "name": "RedPotion",
+                    "value": 20
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                },
+                {
+                    "id": 0,
+                    "type": 0,
+                    "name": "",
+                    "value": 0
+                }
+            ],
+            "id": "shine94",
+            "gold": 1000,
+            "exp": 150,
+            "hp": 100,
+            "currentHp": 50.5,
+            "atkDamage": 3.0,
+            "speed": 4.0,
+            "jumpPower": 12.0
+        }
+    ]
+}

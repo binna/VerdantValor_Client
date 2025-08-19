@@ -38,19 +38,8 @@ namespace Knight.Intro
             var id = _idInputField.text;
             
             #region 데이터 세팅
-            GameData.Init();
-
-            var myItems = new Item[Define.INVNETORY_COUNT];
-            myItems[0] = GameData.items[1];
-            myItems[1] = GameData.items[1];
-            myItems[2] = GameData.items[2];
-            myItems[3] = GameData.items[2];
-            myItems[4] = GameData.items[2];
-
-            Player.GetInstance().InitData(
-                myItems,
-                id, 1000, 150, 100,
-                50.5f, 3f, 4f, 12f);
+            // TODO 유저 검색하는 부분 필요
+            Player.GetInstance().InitData();
             #endregion
             
             SceneManager.LoadScene((int)Define.SceneType.Town);

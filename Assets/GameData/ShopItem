@@ -1,0 +1,28 @@
+{
+    "shopItems": [
+        {
+            "id": 1,
+            "title": "체력 10",
+            "price": 500,
+            "itemId": 1
+        },
+        {
+            "id": 2,
+            "title": "체력 20",
+            "price": 1100,
+            "itemId": 2
+        },
+        {
+            "id": 3,
+            "title": "공격력 강화 3",
+            "price": 700,
+            "itemId": 3
+        },
+        {
+            "id": 4,
+            "title": "공격력 강화 5",
+            "price": 1500,
+            "itemId": 4
+        }
+    ]
+}

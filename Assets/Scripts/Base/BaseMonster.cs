@@ -266,6 +266,7 @@ namespace Knight
                 .PlaySound(Define.SoundType.Event, _audioClip);
             
             // TODO 아이템 드랍
+            // TODO 경험치 획득
 
             _collider2D.enabled = false;
             gameObject.SetActive(false);

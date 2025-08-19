@@ -1,33 +1,34 @@
+using System;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Knight
 {
+    [Serializable]
     public class Player
     {
         private bool _isDataInit;
         
-        private readonly Item[] _items = new Item[Define.INVNETORY_COUNT];
+        [SerializeField] private Item[] items = new Item[Define.INVNETORY_COUNT];
+        [SerializeField] private string id;
+        [SerializeField] private int gold;
+        [SerializeField] private int exp;
+        [SerializeField] private int hp;
+        [SerializeField] private float currentHp;
+        [SerializeField] private float atkDamage;
+        [SerializeField] private float speed;
+        [SerializeField] private float jumpPower;
+        
+        private float _atkDamage;
+        
         private InventoryItemIcon[] _inventoryItemIcons;
-
         private TMP_Text _idText;
         private TMP_Text _levelText;
         private TMP_Text _goldText;
-        
         private Image _hpBar;
-        
-        private string _id;
-        private int _gold;
-        private int _exp;
-        private int _hp;
-        
-        private float _currentHp;
-        private float _atkDamage;
-        private float _speed;
-        private float _jumpPower;
 
         private static Player _instance;
-
         public static Player GetInstance()
         {
             if (_instance == null)
@@ -36,37 +37,14 @@ namespace Knight
             return _instance;
         }
 
-        public void InitData(
-            Item[] items,
-            string id, int gold, int exp, int hp, 
-            float currentHp, float atkDamage, float speed, float jumpPower)
+        public void InitData()
         {
             if (_isDataInit)
                 return;
             
             _isDataInit = true;
             
-            var itemCount = items.Length;
-
-            for (var i = 0; i < itemCount; i++)
-            {
-                _items[i] = items[i];
-            }
-
-            for (var i = itemCount; i < Define.INVNETORY_COUNT; i++)
-            {
-                _items[i] = null;
-            }
-
-            _id = id;
-            _gold = gold;
-            _exp = exp;
-            _hp = hp;
-
-            _currentHp = currentHp;
             _atkDamage = atkDamage;
-            _speed = speed;
-            _jumpPower = jumpPower;
         }
 
         public void InitHUD()
@@ -90,39 +68,39 @@ namespace Knight
 
         public float GetDamage() => _atkDamage;
         
-        public float GetCurrentHp() => _currentHp;
+        public float GetCurrentHp() => currentHp;
         
-        public bool IsFullHp() => _currentHp >= _hp;
+        public bool IsFullHp() => currentHp >= hp;
         
-        public float GetSpeed() => _speed;
+        public float GetSpeed() => speed;
         
-        public float GetJumpPower() => _jumpPower;
+        public float GetJumpPower() => jumpPower;
         
-        public int GetGold() => _gold;
+        public int GetGold() => gold;
         
-        public Item GetItemByIdx(int idx) => _items[idx];
+        public Item GetItemByIdx(int idx) => items[idx];
         
         public float GetHpRatio()
         {
-            if (_currentHp == 0)
+            if (currentHp == 0)
                 return 0;
 
-            return _currentHp / _hp;
+            return currentHp / hp;
         }
         
         public void SetDamage(float damage) => _atkDamage = damage;
         
-        public void TakeDamage(float damage) => _currentHp -= damage;
+        public void TakeDamage(float damage) => currentHp -= damage;
         
-        public void RecoveryHp() => _currentHp += Define.RECOVERY_HP;
+        public void RecoveryHp() => currentHp += Define.RECOVERY_HP;
         
         public void SetHpBar(Image image) => _hpBar = image;
         
-        public void BuyItem(int value) => _gold -= value;
+        public void BuyItem(int value) => gold -= value;
 
         public void PrepareTownRespawn()
         {
-            _currentHp = 1;
+            currentHp = 1;
         }
 
         public void UseItem(Define.ItemType itemType, int value)
@@ -130,21 +108,23 @@ namespace Knight
             switch (itemType)
             {
                 case Define.ItemType.PotionHp:
-                    _currentHp += value;
+                    currentHp += value;
                     _hpBar.fillAmount = GetHpRatio();
                     return;
                 case Define.ItemType.PotionAtk:
                     _atkDamage += value;
                     return;
                 case Define.ItemType.Gold:
-                    _gold += value;
+                    gold += value;
                     return;
             }
+            
+            Debug.Log($"hp : {currentHp} / atk : {_atkDamage} / gold : {gold}");
         }
         
         private int GetLevel()
         {
-            return (_exp / 100) switch
+            return (exp / 100) switch
             {
                 0 => 1,
                 1 => 2,
@@ -162,13 +142,13 @@ namespace Knight
             
             for (var i = 0; i < Define.INVNETORY_COUNT; i++)
             {
-                if (_items[i] == null)
+                if (items[i] == null)
                 {
                     _inventoryItemIcons[i].Init();
                     continue;
                 }
 
-                _inventoryItemIcons[i].AddItem(_items[i]);
+                _inventoryItemIcons[i].AddItem(items[i]);
             }
         }
 
@@ -181,9 +161,9 @@ namespace Knight
         
         private void SetHUDData()
         {
-            _idText.text = _id;
+            _idText.text = id;
             _levelText.text = $"{GetLevel()}";
-            _goldText.text = $"{_gold}";
+            _goldText.text = $"{gold}";
         }
     }
 }
