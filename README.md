@@ -29,12 +29,13 @@
 
 1. 🎮 [Gameplay](#gameplay)
 2. 🧭 [Main Feature](#main-feature)
-3. 🧟 [Monster Balance](#monster-balance)
-4. 🛠️ [Tech Stack](#tech-stack)
-5. 🧪 [Technical](#technical)
-6. 🐞 [Known Issues & Solutions](#known-issues--solutions)
-7. 🎨 [Art Resources](#art-resources)
-8. 🎵 [Sound Resources](#sound-resources)
+3. 👤 [Player Balance](#player-balance)
+4. 🧟 [Monster Balance](#monster-balance)
+5. 🛠️ [Tech Stack](#tech-stack)
+6. 🧪 [Technical](#technical)
+7. 🐞 [Known Issues & Solutions](#known-issues--solutions)
+8. 🎨 [Art Resources](#art-resources)
+9. 🎵 [Sound Resources](#sound-resources)
 
 <hr>
 
@@ -81,6 +82,18 @@
 
 9. **타일맵 기반 맵 디자인 (*Tilemap-Based Map Design*)**  
    Tilemap 시스템을 활용한 유연한 공간 설계
+
+<br><br>
+
+## Player Balance
+
+| Level | HP  | ATK | EXP (누적) |
+|-------|-----|-----|------------|
+| 1     | 100 | 3.0 | 100        |
+| 2     | 150 | 3.5 | 300        |
+| 3     | 220 | 4.2 | 700        |
+| 4     | 300 | 5.0 | 1200       |
+| 5     | 400 | 6.0 | 2000       |
 
 <br><br>
 
