@@ -9,23 +9,20 @@ namespace Knight
         private static string GetPath(string fileName)
             => Path.Combine(Application.dataPath, $"GameData/{fileName}");
 
-        public static void Save<T>(string fileName, T data, bool pretty = true)
+        public static void Save<T>(string fileName, T data)
         {
             try
             {
                 var path = GetPath(fileName);
-                var json = JsonUtility.ToJson(data, pretty);
+                var json = JsonUtility.ToJson(data, true);
 
                 File.WriteAllText(path, json);
-
-                if (File.Exists(path))
-                    File.Replace(path, path, null);
-                else
-                    File.Move(path, path);
+                
+                Debug.Log($"Save Complete({fileName})");
             }
             catch (Exception e)
             {
-                Debug.LogError($"Json Save error: {e}");
+                Debug.LogError($"Json Save error({fileName})\n{e}");
             }
         }
 
@@ -46,7 +43,7 @@ namespace Knight
             }
             catch (Exception e)
             {
-                Debug.LogError($"Json Load error: {e}");
+                Debug.LogError($"Json Load error({fileName})\n{e}");
                 data = default;
             }
         }

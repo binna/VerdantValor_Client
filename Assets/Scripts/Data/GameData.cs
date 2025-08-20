@@ -16,8 +16,20 @@ namespace Knight
     }
     
     [Serializable]
+    public class ExpGameData
+    {
+        public List<Exp> exps;
+    }
+    
+    [Serializable]
     public class UserGameData
     {
-        public List<Player> users;
+        public List<User> users;
+    }
+    
+    [Serializable]
+    public class PlayerStatGameData
+    {
+        public List<PlayerStat> playerStats;
     }
 }

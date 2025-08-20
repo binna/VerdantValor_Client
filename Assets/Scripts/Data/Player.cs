@@ -1,24 +1,23 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Knight
 {
-    [Serializable]
     public class Player
     {
         private bool _isDataInit;
         
-        [SerializeField] private Item[] items = new Item[Define.INVNETORY_COUNT];
-        [SerializeField] private string id;
-        [SerializeField] private int gold;
-        [SerializeField] private int exp;
-        [SerializeField] private int hp;
-        [SerializeField] private float currentHp;
-        [SerializeField] private float atkDamage;
-        [SerializeField] private float speed;
-        [SerializeField] private float jumpPower;
+        private const float SPEED = 4.5f;
+        private const float JUMP_POWER = 12f;
+                
+        private Item[] items = new Item[Define.INVNETORY_COUNT];
+        private string id;
+        private int gold;
+        private int exp;
+        private int hp;
+        private float currentHp;
+        private float atkDamage;
         
         private float _atkDamage;
         
@@ -35,16 +34,6 @@ namespace Knight
                 _instance = new Player();
 
             return _instance;
-        }
-
-        public void InitData()
-        {
-            if (_isDataInit)
-                return;
-            
-            _isDataInit = true;
-            
-            _atkDamage = atkDamage;
         }
 
         public void InitHUD()
@@ -66,15 +55,53 @@ namespace Knight
             SetHUDData();
         }
 
+        public bool FindPlayer(string inputId)
+        {
+            id = inputId;
+            
+            if (GameDataManager
+                .GetInstance()
+                .users
+                .TryGetValue(inputId, out var player))
+            {
+                items = player.GetItems();
+                id = player.GetId();
+                gold = player.GetGold();
+                exp = player.GetExp();
+                currentHp = player.GetCurrentHp();
+            }
+
+            var level = GetLevel();
+            if (GameDataManager
+                .GetInstance()
+                .playerStats
+                .TryGetValue(level, out var playerStats))
+            {
+                hp = playerStats.GetHp();
+                atkDamage = playerStats.GetAtkDamage();
+                InitData();
+                return true;
+            }
+            
+            Debug.LogError($"Player not found Id : {inputId}/ Level : {level}");
+            return false;
+        }
+
+        public Item[] GetItems() => items;
+        
+        public string GetId() => id;
+        
         public float GetDamage() => _atkDamage;
         
         public float GetCurrentHp() => currentHp;
         
+        public int GetExp() => exp;
+        
         public bool IsFullHp() => currentHp >= hp;
         
-        public float GetSpeed() => speed;
+        public float GetSpeed() => SPEED;
         
-        public float GetJumpPower() => jumpPower;
+        public float GetJumpPower() => JUMP_POWER;
         
         public int GetGold() => gold;
         
@@ -119,19 +146,21 @@ namespace Knight
                     return;
             }
             
+            // TODO
             Debug.Log($"hp : {currentHp} / atk : {_atkDamage} / gold : {gold}");
         }
         
         private int GetLevel()
         {
-            return (exp / 100) switch
+            var level = 1;
+            foreach (var info in GameDataManager.GetInstance().exps)
             {
-                0 => 1,
-                1 => 2,
-                2 => 3,
-                3 => 4,
-                _ => 5
-            };
+                level = info.Value;
+
+                if (info.Key > exp)
+                    break;
+            }
+            return level;
         }
 
         private void SetInventoryInit()
@@ -164,6 +193,16 @@ namespace Knight
             _idText.text = id;
             _levelText.text = $"{GetLevel()}";
             _goldText.text = $"{gold}";
+        }
+        
+        private void InitData()
+        {
+            if (_isDataInit)
+                return;
+            
+            _isDataInit = true;
+            
+            _atkDamage = atkDamage;
         }
     }
 }

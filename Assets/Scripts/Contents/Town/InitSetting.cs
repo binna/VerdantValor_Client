@@ -28,13 +28,9 @@ namespace Knight.Town
             }
             #endregion
             
-            // TODO
-            #region 삭제할 것
-            // TODO 유저 검색하는 부분 필요
-            Player.GetInstance().InitData();
-            #endregion
-            
-            Player.GetInstance().InitHUD();
+            Player
+                .GetInstance()
+                .InitHUD();
         }
     }
 }

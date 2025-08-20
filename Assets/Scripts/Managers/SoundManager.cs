@@ -12,7 +12,8 @@ namespace Knight
         {
             if (_instance == null)
             {
-                GameObject soundManager = GameObject.Find(Define.GameObjectName.SOUND_MANAGER);
+                GameObject soundManager 
+                    = GameObject.Find(Define.GameObjectName.SOUND_MANAGER);
                 
                 if (soundManager == null)
                 {

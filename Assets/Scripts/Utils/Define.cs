@@ -57,6 +57,7 @@ namespace Knight
         public static class GameObjectName
         {
             public const string SOUND_MANAGER = "@SoundManager";
+            public const string GAME_DATA_MANAGER = "@GameDataManager";
             public const string BGM_AUDIO = "BgmAudio";
             public const string EVENT_AUDIO = "EventAudio";
             public const string SPAWN_NAME = "Monsters";

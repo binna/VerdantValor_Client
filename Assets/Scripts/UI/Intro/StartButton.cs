@@ -38,8 +38,11 @@ namespace Knight.Intro
             var id = _idInputField.text;
             
             #region 데이터 세팅
-            // TODO 유저 검색하는 부분 필요
-            Player.GetInstance().InitData();
+
+            if (!Player.GetInstance().FindPlayer(id))
+            {
+            }
+
             #endregion
             
             SceneManager.LoadScene((int)Define.SceneType.Town);

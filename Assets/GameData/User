@@ -126,11 +126,7 @@
             "id": "shine94",
             "gold": 1000,
             "exp": 150,
-            "hp": 100,
-            "currentHp": 50.5,
-            "atkDamage": 3.0,
-            "speed": 4.0,
-            "jumpPower": 12.0
+            "currentHp": 69.5
         }
     ]
 }
