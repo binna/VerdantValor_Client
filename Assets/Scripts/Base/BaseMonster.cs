@@ -30,12 +30,14 @@ namespace Knight
 
         private int _xMin;
         private int _xMax;
+
+        private int _gainExp;
         
         private Animator _animator;
         private Transform _playerTransform;
         private Collider2D _collider2D;
         
-        private AudioClip _audioClip;
+        private AudioClip _deathClip;
         
         private float _toMonsterDistance;
         private bool _isTrace;
@@ -62,7 +64,8 @@ namespace Knight
         
         protected void Init(
             float hp, float speed, float attackTime, float damage, 
-            float traceDistance, float attackDistance)
+            float traceDistance, float attackDistance,
+            int gainExp)
         {
             _hp = hp;
             _traceDistance = traceDistance;
@@ -85,7 +88,7 @@ namespace Knight
             hpBar.fillAmount = _currentHp / _hp;
             _isTrace = false;
             
-            _audioClip = Resources.Load<AudioClip>(Define.MONSTER_DIE_PATH);
+            _deathClip = Resources.Load<AudioClip>(Define.MONSTER_DIE_PATH);
 
             RandomPosition();
         }
@@ -263,10 +266,13 @@ namespace Knight
             
             SoundManager
                 .GetInstance()
-                .PlaySound(Define.SoundType.Event, _audioClip);
+                .PlaySound(Define.SoundType.Event, _deathClip);
             
             // TODO 아이템 드랍
-            // TODO 경험치 획득
+            
+            Player
+                .GetInstance()
+                .GainExp(_gainExp);
 
             _collider2D.enabled = false;
             gameObject.SetActive(false);

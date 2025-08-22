@@ -24,6 +24,8 @@ namespace Knight
         
         public void SetItems(Item[] newItem) => items = newItem;
         
+        public void SetId(string newId) => id = newId;
+        
         public void SetGold(int newGold) => gold = newGold;
         
         public void SetExp(int newExp) => exp = newExp;

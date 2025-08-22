@@ -124,9 +124,9 @@
                 }
             ],
             "id": "shine94",
-            "gold": 1000,
+            "gold": 0,
             "exp": 150,
-            "currentHp": 69.5
+            "currentHp": 133.5
         }
     ]
 }

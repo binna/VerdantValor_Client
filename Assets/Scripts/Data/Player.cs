@@ -11,15 +11,17 @@ namespace Knight
         private const float SPEED = 4.5f;
         private const float JUMP_POWER = 12f;
                 
-        private Item[] items = new Item[Define.INVNETORY_COUNT];
-        private string id;
-        private int gold;
-        private int exp;
-        private int hp;
-        private float currentHp;
-        private float atkDamage;
-        
+        private Item[] _items = new Item[Define.INVNETORY_COUNT];
+        private string _id;
+        private int _gold;
+        private int _exp;
+        private int _hp;
+        private float _currentHp;
         private float _atkDamage;
+        
+        private float _currentAtkDamage;
+
+        private AudioClip _levelUpClip;
         
         private InventoryItemIcon[] _inventoryItemIcons;
         private TMP_Text _idText;
@@ -31,7 +33,10 @@ namespace Knight
         public static Player GetInstance()
         {
             if (_instance == null)
+            {
                 _instance = new Player();
+                // TODO 레벨 업 사운드
+            }
 
             return _instance;
         }
@@ -57,18 +62,18 @@ namespace Knight
 
         public bool FindPlayer(string inputId)
         {
-            id = inputId;
+            GetInstance()._id = inputId;
             
             if (GameDataManager
                 .GetInstance()
                 .users
                 .TryGetValue(inputId, out var player))
             {
-                items = player.GetItems();
-                id = player.GetId();
-                gold = player.GetGold();
-                exp = player.GetExp();
-                currentHp = player.GetCurrentHp();
+                _items = player.GetItems();
+                _id = player.GetId();
+                _gold = player.GetGold();
+                _exp = player.GetExp();
+                _currentHp = player.GetCurrentHp();
             }
 
             var level = GetLevel();
@@ -77,8 +82,8 @@ namespace Knight
                 .playerStats
                 .TryGetValue(level, out var playerStats))
             {
-                hp = playerStats.GetHp();
-                atkDamage = playerStats.GetAtkDamage();
+                _hp = playerStats.GetHp();
+                _atkDamage = playerStats.GetAtkDamage();
                 InitData();
                 return true;
             }
@@ -87,47 +92,59 @@ namespace Knight
             return false;
         }
 
-        public Item[] GetItems() => items;
+        public Item[] GetItems() => _items;
         
-        public string GetId() => id;
+        public string GetId() => _id;
         
-        public float GetDamage() => _atkDamage;
+        public float GetDamage() => _currentAtkDamage;
         
-        public float GetCurrentHp() => currentHp;
+        public float GetCurrentHp() => _currentHp;
         
-        public int GetExp() => exp;
+        public int GetExp() => _exp;
         
-        public bool IsFullHp() => currentHp >= hp;
+        public bool IsFullHp() => _currentHp >= _hp;
         
         public float GetSpeed() => SPEED;
         
         public float GetJumpPower() => JUMP_POWER;
         
-        public int GetGold() => gold;
+        public int GetGold() => _gold;
         
-        public Item GetItemByIdx(int idx) => items[idx];
+        public Item GetItemByIdx(int idx) => _items[idx];
         
         public float GetHpRatio()
         {
-            if (currentHp == 0)
+            if (_currentHp == 0)
                 return 0;
 
-            return currentHp / hp;
+            return _currentHp / _hp;
         }
         
-        public void SetDamage(float damage) => _atkDamage = damage;
+        public void SetDamage(float damage) => _currentAtkDamage = damage;
         
-        public void TakeDamage(float damage) => currentHp -= damage;
+        public void TakeDamage(float damage) => _currentHp -= damage;
         
-        public void RecoveryHp() => currentHp += Define.RECOVERY_HP;
+        public void RecoveryHp() => _currentHp += Define.RECOVERY_HP;
         
         public void SetHpBar(Image image) => _hpBar = image;
         
-        public void BuyItem(int value) => gold -= value;
+        public void BuyItem(int value) => _gold -= value;
+
+        public void GainExp(int gainExp)
+        {
+            var nowLevel = GetLevel();
+            _exp += gainExp;
+            var newLevel = GetLevel();
+
+            if (newLevel > nowLevel)
+            {
+                SoundManager.GetInstance().PlaySound(Define.SoundType.Event, _levelUpClip);
+            }
+        }
 
         public void PrepareTownRespawn()
         {
-            currentHp = 1;
+            _currentHp = 1;
         }
 
         public void UseItem(Define.ItemType itemType, int value)
@@ -135,19 +152,19 @@ namespace Knight
             switch (itemType)
             {
                 case Define.ItemType.PotionHp:
-                    currentHp += value;
+                    _currentHp += value;
                     _hpBar.fillAmount = GetHpRatio();
                     return;
                 case Define.ItemType.PotionAtk:
-                    _atkDamage += value;
+                    _currentAtkDamage += value;
                     return;
                 case Define.ItemType.Gold:
-                    gold += value;
+                    _gold += value;
                     return;
             }
             
-            // TODO
-            Debug.Log($"hp : {currentHp} / atk : {_atkDamage} / gold : {gold}");
+            // TODO 공격력 강화는 개수 제한과 시간 정보가 필요함
+            Debug.Log($"hp : {_currentHp} / atk : {_currentAtkDamage} / gold : {_gold}");
         }
         
         private int GetLevel()
@@ -157,7 +174,7 @@ namespace Knight
             {
                 level = info.Value;
 
-                if (info.Key > exp)
+                if (info.Key > _exp)
                     break;
             }
             return level;
@@ -171,13 +188,13 @@ namespace Knight
             
             for (var i = 0; i < Define.INVNETORY_COUNT; i++)
             {
-                if (items[i] == null)
+                if (_items[i] == null)
                 {
                     _inventoryItemIcons[i].Init();
                     continue;
                 }
 
-                _inventoryItemIcons[i].AddItem(items[i]);
+                _inventoryItemIcons[i].AddItem(_items[i]);
             }
         }
 
@@ -190,9 +207,9 @@ namespace Knight
         
         private void SetHUDData()
         {
-            _idText.text = id;
+            _idText.text = _id;
             _levelText.text = $"{GetLevel()}";
-            _goldText.text = $"{gold}";
+            _goldText.text = $"{_gold}";
         }
         
         private void InitData()
@@ -202,7 +219,7 @@ namespace Knight
             
             _isDataInit = true;
             
-            _atkDamage = atkDamage;
+            _currentAtkDamage = _atkDamage;
         }
     }
 }

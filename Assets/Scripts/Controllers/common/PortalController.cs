@@ -27,7 +27,7 @@ namespace Knight
         private GameObject _loadingImage;
         private Image _progressBar;
         
-        private AudioClip _audioClip;
+        private AudioClip _portalMoveClip;
         
         private void Start()
         {
@@ -46,12 +46,12 @@ namespace Knight
                 .FindUIComponentByName<Image>(
                     $"{Define.UiName.Loading}", Define.UiObjectName.IMG_PROGRESS_BAR);
 
-            _audioClip = Resources.Load<AudioClip>(Define.PORTAL_PATH);
+            _portalMoveClip = Resources.Load<AudioClip>(Define.PORTAL_PATH);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            SoundManager.GetInstance().PlaySound(Define.SoundType.Event, _audioClip);
+            SoundManager.GetInstance().PlaySound(Define.SoundType.Event, _portalMoveClip);
 
             player.BlockInput();
             

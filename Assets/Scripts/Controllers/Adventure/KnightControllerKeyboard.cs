@@ -27,7 +27,7 @@ namespace Knight.Adventure
         private CapsuleCollider2D _collider;
 
         private Vector3 _inputDir;
-        private AudioClip _audioClip;
+        private AudioClip _gameOverClip;
 
         private bool _isDead;
         private bool _isGround;
@@ -102,7 +102,7 @@ namespace Knight.Adventure
             Player.GetInstance().SetHpBar(hpBar);
             hpBar.fillAmount = Player.GetInstance().GetHpRatio();
             
-            _audioClip = Resources.Load<AudioClip>(Define.GAMEOVER_PATH);
+            _gameOverClip = Resources.Load<AudioClip>(Define.GAMEOVER_PATH);
         }
 
         private void Update()       // 일반적인 작업
@@ -264,7 +264,7 @@ namespace Knight.Adventure
             
             SoundManager
                 .GetInstance()
-                .PlaySound(Define.SoundType.Event, _audioClip);
+                .PlaySound(Define.SoundType.Event, _gameOverClip);
 
             yield return new WaitForSeconds(1f); 
             

@@ -125,6 +125,7 @@ namespace Knight
             {
                 userData = new User();
                 userData.SetItems(Player.GetInstance().GetItems());
+                userData.SetId(Player.GetInstance().GetId());
                 userData.SetGold(Player.GetInstance().GetGold());
                 userData.SetExp(Player.GetInstance().GetExp());
                 userData.SetCurrentHp(Player.GetInstance().GetCurrentHp());

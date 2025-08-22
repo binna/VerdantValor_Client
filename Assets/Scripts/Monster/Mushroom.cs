@@ -20,7 +20,7 @@ namespace Knight.Adventure
         {
             Init(
                 35f, 0.8f, 3f, 2f,
-                4f, 1f);
+                4f, 1f, 20);
         }
     }
 }
