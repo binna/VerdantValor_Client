@@ -21,7 +21,7 @@ namespace Knight.Town
             
             for (var i = 0; i < showItemIconCount; i++)
             {
-                if (GameDataManager.GetInstance().shopItems.TryGetValue(i + 1, out var shopItem))
+                if (GameDataManager.shopItems.TryGetValue(i + 1, out var shopItem))
                 {
                     shopItemIcons[i].Init(shopItem);
                 }

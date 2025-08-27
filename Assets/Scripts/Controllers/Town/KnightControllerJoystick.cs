@@ -5,8 +5,7 @@ namespace Knight.Town
 {
     public class KnightControllerJoystick : BasePlayer
     {
-        [SerializeField] 
-        private Image hpBar;
+        [SerializeField] private Image hpBar;
 
         private Animator _animator;
         private Rigidbody2D _rigidbody;

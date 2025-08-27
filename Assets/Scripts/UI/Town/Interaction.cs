@@ -4,8 +4,7 @@ namespace Knight.Town
 {
     public class Interaction : MonoBehaviour
     {
-        [SerializeField]
-        private Define.UiName popupName;
+        [SerializeField] private Define.UiName popupName;
 
         private void OnTriggerEnter2D(Collider2D other)
         {

@@ -5,11 +5,14 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ladder
+  - Monster
+  - Ground
+  - ItemTrigger
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Weapon
   - Water
   - UI
   - Ground

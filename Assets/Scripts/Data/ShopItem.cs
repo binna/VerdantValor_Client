@@ -15,7 +15,7 @@ namespace Knight
 
         public void Init()
         {
-            _item = GameDataManager.GetInstance().items[itemId];
+            _item = GameDataManager.items[itemId];
         }
 
         public int GetId() => id;
@@ -30,12 +30,14 @@ namespace Knight
         {
             if (Player.GetInstance().GetGold() >= price)
             {
-                Player.GetInstance().BuyItem(price);
-                        
-                UIManager
-                    .GetInstance()
-                    .ShowAlarm("구매에 성공했습니다.");
-                return;
+                if (Player.GetInstance().GainItem(_item))
+                {
+                    Player.GetInstance().BuyItem(price);
+                    UIManager
+                        .GetInstance()
+                        .ShowAlarm("구매에 성공했습니다.");
+                    return;
+                }
             }
 
             UIManager

@@ -4,22 +4,15 @@ namespace Knight
 {
     public class CameraFollow : MonoBehaviour
     {
-        [SerializeField]
-        private Transform target;
-        
-        [SerializeField]
-        private Vector3 offset = new(0f, 3f, -10f);
-        
-        [SerializeField]
-        private float smoothSpeed = 5f;
+        [SerializeField] private Transform target;
+        [SerializeField] private Vector3 offset = new(0f, 3f, -10f);
+        [SerializeField] private float smoothSpeed = 5f;
         
         // minBound ~ maxBound 내로 카메라 이동 가능
-        [SerializeField]
-        private Vector2 minBound = new(-9.5f, -11f);
-        
-        [SerializeField]
-        private Vector2 maxBound = new(28.5f, 13f);
+        [SerializeField] private Vector2 minBound = new(-9.5f, -11f);
+        [SerializeField] private Vector2 maxBound = new(28.5f, 13f);
 
+        #region 이벤트 함수
         private void LateUpdate()
         {
             if (target == null)
@@ -33,6 +26,7 @@ namespace Knight
             
             transform.position = smoothPos;
         }
+        #endregion
 
         public void SetMaxXBound(float x)
         {

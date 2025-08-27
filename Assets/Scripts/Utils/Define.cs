@@ -48,10 +48,22 @@ namespace Knight
 
         public enum Layer : int
         {
+            Default = 0,
+            TransparentFX = 1,
+            IgnoreRaycast = 2,
+            Weapon = 3,
+            Water = 4,
+            UI = 5,
             Ground = 6,
-            Player,
-            Item,
-            Monster
+            Player = 7,
+            Item = 8,
+            Monster = 9
+        }
+        
+        public enum MovingPlatformType
+        {
+            Horizontal,
+            Vertical
         }
         
         public static class GameObjectName
@@ -83,6 +95,10 @@ namespace Knight
             public const string TXT_LEVEL = "Txt_Level";
             public const string TXT_GOLD = "Txt_Gold";
             public const string TXT_MESSAGE = "Txt_Message";
+            
+            public const string PLAY_GAME = "PlayGame";
+            public const string MONSTERS = "Monsters";
+            public const string ITEMS = "Items";
         }
         
         public static class Tag
@@ -97,6 +113,7 @@ namespace Knight
             public const string LADDER = "Ladder";
             public const string MONSTER = "Monster";
             public const string GROUND = "Ground";
+            public const string ITEM_TRIGGER = "ItemTrigger";
         }
         
         public static class AnimatorParameter
@@ -110,15 +127,17 @@ namespace Knight
             public static readonly int positionX = Animator.StringToHash("PositionX");
             public static readonly int positionY = Animator.StringToHash("PositionY");
             public static readonly int isRun = Animator.StringToHash("IsRun");
+            public static readonly int push = Animator.StringToHash("Push");
         }
         
         // Sounds
         public const string INTRO_BGM_PATH = "Sounds/IntroBGM";
         public const string TOWN_BGM_PATH = "Sounds/TownBGM";
         public const string ADVENTURE_BGM_PATH = "Sounds/AdventureBGM";
-        public const string PORTAL_PATH = "Sounds/Portal";
+        public const string PORTAL_MOVE_PATH = "Sounds/Portal";
         public const string GAMEOVER_PATH = "Sounds/Gameover";
-        public const string MONSTER_DIE_PATH = "Sounds/MonsterDie";
+        public const string MONSTER_DEATH_PATH = "Sounds/MonsterDie";
+        public const string LEVEL_UP_PATH = "Sounds/LevelUp";
         
         // speed
         public const float DIALOG_TYPING_SPEED = 0.05f;
@@ -136,6 +155,7 @@ namespace Knight
         public const string VERTICAL = "Vertical";
         
         // Monster
+        public static string[] monsterType = { "FlyingEye", "Goblin", "Mushroom", "Skeleton" };
         public static MonsterSpawnArea[] monsterPositions =
         {
             new(-16, 16, -3),
@@ -144,9 +164,9 @@ namespace Knight
             new(60, 100, 9),
             new(91, 102, 14),
             new(49, 72, 14),
-            new(30, 42, 12),
+            new(30, 42, 12)
         };
+        public static int MONSTER_LIMIT = 10;
         public static readonly int monsterPosCnt = monsterPositions.Length;
-        public const int MONSTER_LIMIT = 15;
     }
 }

@@ -33,12 +33,14 @@ namespace Knight
         public static Player GetInstance()
         {
             if (_instance == null)
-            {
                 _instance = new Player();
-                // TODO 레벨 업 사운드
-            }
 
             return _instance;
+        }
+
+        private Player()
+        {
+            _levelUpClip = Resources.Load<AudioClip>(Define.LEVEL_UP_PATH);
         }
 
         public void InitHUD()
@@ -65,7 +67,6 @@ namespace Knight
             GetInstance()._id = inputId;
             
             if (GameDataManager
-                .GetInstance()
                 .users
                 .TryGetValue(inputId, out var player))
             {
@@ -78,7 +79,6 @@ namespace Knight
 
             var level = GetLevel();
             if (GameDataManager
-                .GetInstance()
                 .playerStats
                 .TryGetValue(level, out var playerStats))
             {
@@ -141,36 +141,69 @@ namespace Knight
                 SoundManager.GetInstance().PlaySound(Define.SoundType.Event, _levelUpClip);
             }
         }
+        
+        public bool GainItem(Item newItem)
+        {
+            switch (newItem.GetItemType())
+            {
+                case Define.ItemType.Gold:
+                {
+                    newItem.Use();
+                    return true;
+                }
+                case Define.ItemType.PotionAtk:
+                case Define.ItemType.PotionHp:
+                {
+                    for (var i = 0; i < Define.INVNETORY_COUNT; i++)
+                    {
+                        if (_items[i].GetId() != 0)
+                            continue;
+                
+                        _items[i] = newItem;
+                        SetInventoryInit();
+                        return true;
+                    }
+                    break;
+                }
+            }
+            return false;
+        }
 
         public void PrepareTownRespawn()
         {
             _currentHp = 1;
         }
 
-        public void UseItem(Define.ItemType itemType, int value)
+        public void UseItem(Define.ItemType itemType, int value, int index)
         {
             switch (itemType)
             {
                 case Define.ItemType.PotionHp:
                     _currentHp += value;
                     _hpBar.fillAmount = GetHpRatio();
-                    return;
+                    break;
                 case Define.ItemType.PotionAtk:
+                    // TODO 갯수 제한 걸기 및 유효기간 걸기
                     _currentAtkDamage += value;
-                    return;
+                    break;
                 case Define.ItemType.Gold:
                     _gold += value;
-                    return;
+                    break;
             }
-            
-            // TODO 공격력 강화는 개수 제한과 시간 정보가 필요함
-            Debug.Log($"hp : {_currentHp} / atk : {_currentAtkDamage} / gold : {_gold}");
+
+            if (index != 0)
+            {
+                InitInventoryItemIcon(index);
+                Debug.Log(">>>>>>>>");
+            }
+
+            SetHUDData();
         }
         
         private int GetLevel()
         {
             var level = 1;
-            foreach (var info in GameDataManager.GetInstance().exps)
+            foreach (var info in GameDataManager.exps)
             {
                 level = info.Value;
 
@@ -188,14 +221,21 @@ namespace Knight
             
             for (var i = 0; i < Define.INVNETORY_COUNT; i++)
             {
-                if (_items[i] == null)
+                Debug.Log(_items[i]);
+                if (_items[i].GetId() == 0)
                 {
                     _inventoryItemIcons[i].Init();
                     continue;
                 }
 
-                _inventoryItemIcons[i].AddItem(_items[i]);
+                _inventoryItemIcons[i].AddItem(_items[i], i);
             }
+        }
+
+        private void InitInventoryItemIcon(int index)
+        {
+            _items[index] = new Item();
+            _inventoryItemIcons[index].Init();
         }
 
         private void SetHUD(TMP_Text idText, TMP_Text levelText, TMP_Text goldText)
@@ -214,7 +254,7 @@ namespace Knight
         
         private void InitData()
         {
-            if (_isDataInit)
+            if (!_isDataInit)
                 return;
             
             _isDataInit = true;

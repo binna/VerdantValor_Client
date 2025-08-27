@@ -6,38 +6,21 @@ namespace Knight
     public class GameDataManager : MonoBehaviour
     {
         #region 게임 데이터
-        public Dictionary<int, Item> items = new();
-        public Dictionary<int, ShopItem> shopItems = new();
-        public Dictionary<string, User> users = new();
-        public Dictionary<int, PlayerStat> playerStats = new();
-        public Dictionary<int, int> exps = new();
+        public static Dictionary<int, Item> items { get; } = new();
+        public static Dictionary<int, ShopItem> shopItems { get; } = new();
+        public static Dictionary<string, User> users { get; }  = new();
+        public static Dictionary<int, PlayerStat> playerStats { get; } = new();
+        public static Dictionary<int, int> exps { get; } = new();
         #endregion
-        
+
         private static bool _isDataInit;
-        
-        private static GameDataManager _instance;
-        public static GameDataManager GetInstance()
+        private static int _itemsCount;
+
+        public static int GetItemsCount()
         {
-            if (_instance == null)
-            {
-                GameObject gameDataManager
-                    = GameObject.Find(Define.GameObjectName.GAME_DATA_MANAGER);
-
-                if (gameDataManager == null)
-                {
-                    gameDataManager = new GameObject(Define.GameObjectName.GAME_DATA_MANAGER);
-                    gameDataManager.AddComponent<GameDataManager>();
-                }
-                
-                DontDestroyOnLoad(gameDataManager);
-
-                _instance = gameDataManager.AddComponent<GameDataManager>();;
-                _instance.Init();
-            }
-
-            return _instance;
+            return _itemsCount;
         }
-
+        
         #region 이벤트 함수
         private void Awake()
         {
@@ -50,7 +33,7 @@ namespace Knight
         }
         #endregion
         
-        private void Init()
+        private static void Init()
         {
             if (_isDataInit)
                 return;
@@ -64,8 +47,10 @@ namespace Knight
                 var count = data.items.Count;
                 for (var i = 0; i < count; i++)
                 {
-                    GetInstance().items.Add(data.items[i].GetId(), data.items[i]);
+                    items.Add(data.items[i].GetId(), data.items[i]);
                 }
+                
+                _itemsCount = items.Count;
             }
 
             {
@@ -74,8 +59,8 @@ namespace Knight
                 var count = data.shopItems.Count;
                 for (var i = 0; i < count; i++)
                 {
-                    GetInstance().shopItems.Add(data.shopItems[i].GetId(), data.shopItems[i]);
-                    GetInstance().shopItems[data.shopItems[i].GetId()].Init();
+                    shopItems.Add(data.shopItems[i].GetId(), data.shopItems[i]);
+                    shopItems[data.shopItems[i].GetId()].Init();
                 }
             }
             
@@ -85,7 +70,7 @@ namespace Knight
                 var count = data.exps.Count;
                 for (var i = 0; i < count; i++)
                 {
-                    GetInstance().exps.Add(data.exps[i].GetExp(), data.exps[i].GetLevel());
+                    exps.Add(data.exps[i].GetExp(), data.exps[i].GetLevel());
                 }
             }
             
@@ -95,7 +80,7 @@ namespace Knight
                 var count = data.users.Count;
                 for (var i = 0; i < count; i++)
                 {
-                    GetInstance().users.Add(data.users[i].GetId(), data.users[i]);
+                    users.Add(data.users[i].GetId(), data.users[i]);
                 }
             }
 
@@ -105,15 +90,14 @@ namespace Knight
                 var count = data.playerStats.Count;
                 for (var i = 0; i < count; i++)
                 {
-                    GetInstance().playerStats.Add(data.playerStats[i].GetLevel(), data.playerStats[i]);
+                    playerStats.Add(data.playerStats[i].GetLevel(), data.playerStats[i]);
                 }
             }
         }
 
-        private void SaveUserDataToJson()
+        private static void SaveUserDataToJson()
         {
-            if (GetInstance()
-                .users
+            if (users
                 .TryGetValue(Player.GetInstance().GetId(), out var userData))
             {
                 userData.SetItems(Player.GetInstance().GetItems());
@@ -129,12 +113,12 @@ namespace Knight
                 userData.SetGold(Player.GetInstance().GetGold());
                 userData.SetExp(Player.GetInstance().GetExp());
                 userData.SetCurrentHp(Player.GetInstance().GetCurrentHp());
-                GetInstance().users.Add(Player.GetInstance().GetId(), userData);
+                users.Add(Player.GetInstance().GetId(), userData);
             }
 
             var json = new UserGameData { users = new List<User>() };
 
-            foreach (var user in GetInstance().users)
+            foreach (var user in users)
             {
                 json.users.Add(user.Value);
             }

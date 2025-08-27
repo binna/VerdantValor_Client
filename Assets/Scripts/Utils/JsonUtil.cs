@@ -6,9 +6,6 @@ namespace Knight
 {
     public static class JsonUtil
     {
-        private static string GetPath(string fileName)
-            => Path.Combine(Application.dataPath, $"GameData/{fileName}");
-
         public static void Save<T>(string fileName, T data)
         {
             try
@@ -47,5 +44,8 @@ namespace Knight
                 data = default;
             }
         }
+        
+        private static string GetPath(string fileName)
+            => Path.Combine(Application.dataPath, $"GameData/{fileName}");
     }
 }

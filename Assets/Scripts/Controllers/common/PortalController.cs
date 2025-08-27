@@ -7,20 +7,11 @@ namespace Knight
 {
     public class PortalController : MonoBehaviour
     {
-        [SerializeField] 
-        private GameObject portalEffect;
-
-        [SerializeField] 
-        private Define.SceneType scene;
-        
-        [SerializeField]
-        private BasePlayer player;
-        
-        [SerializeField]
-        private Vector3 position;
-
-        [SerializeField]
-        private Vector3 scale;
+        [SerializeField] private Define.SceneType scene;
+        [SerializeField] private GameObject portalEffect;
+        [SerializeField] private BasePlayer player;
+        [SerializeField] private Vector3 position;
+        [SerializeField] private Vector3 scale;
         
         private FadeRoutine _fade;
         
@@ -46,7 +37,7 @@ namespace Knight
                 .FindUIComponentByName<Image>(
                     $"{Define.UiName.Loading}", Define.UiObjectName.IMG_PROGRESS_BAR);
 
-            _portalMoveClip = Resources.Load<AudioClip>(Define.PORTAL_PATH);
+            _portalMoveClip = Resources.Load<AudioClip>(Define.PORTAL_MOVE_PATH);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

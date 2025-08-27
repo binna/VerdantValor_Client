@@ -8,11 +8,8 @@ namespace Knight
 {
     public abstract class BaseMonster : MonoBehaviour
     {
-        [SerializeField] 
-        protected Image hpBar;
-        
-        [SerializeField]
-        private Define.MonsterState state = Define.MonsterState.Idle;
+        [SerializeField] protected Image hpBar;
+        [SerializeField] private Define.MonsterState state = Define.MonsterState.Idle;
         
         private float _hp;
         private float _traceDistance;
@@ -33,16 +30,20 @@ namespace Knight
 
         private int _gainExp;
         
-        private Animator _animator;
         private Transform _playerTransform;
+        private Transform _itemFolderTransform;
+        private Transform _transform;
+        
+        private Animator _animator;
         private Collider2D _collider2D;
         
         private AudioClip _deathClip;
         
         private float _toMonsterDistance;
         private bool _isTrace;
+        private bool _configured;
 
-        protected abstract void Start();
+        protected abstract void Awake();
 
         public void TakeDamage(float damage)
         {
@@ -55,55 +56,24 @@ namespace Knight
 
         public IEnumerator SpawnMonster()
         {
-            gameObject.SetActive(true);
+            gameObject.transform.parent.gameObject.SetActive(true);
+            
+            yield return null;
+            
+            RandomPosition();
             
             yield return null;
             
             _collider2D.enabled = true;
-        }
-        
-        protected void Init(
-            float hp, float speed, float attackTime, float damage, 
-            float traceDistance, float attackDistance,
-            int gainExp)
-        {
-            _hp = hp;
-            _traceDistance = traceDistance;
-            _attackDistance = attackDistance;
-            
             _currentHp = _hp;
-            _speed = speed;
-            _attackTime = attackTime;
-            _atkDamage = damage;
-
-            _playerTransform = GameObject
-                .FindGameObjectWithTag(Define.Tag.PLAYER)
-                .transform;
-            _animator = GetComponent<Animator>();
-            _collider2D = GetComponent<Collider2D>();
-            
-            _collider2D.enabled = false;
-
-            _currentHp = _hp;
-            hpBar.fillAmount = _currentHp / _hp;
             _isTrace = false;
-            
-            _deathClip = Resources.Load<AudioClip>(Define.MONSTER_DIE_PATH);
-
-            RandomPosition();
         }
 
         #region 이벤트 함수
-        private void OnEnable()
-        {
-            _currentHp = _hp;
-            RandomPosition();
-        }
-        
         private void Update()
         {
             // 두 위치(플레이어 -> 몬스터) 간의 벡터(방향 + 거리 포함)
-            var toMonster = transform.position - _playerTransform.position;
+            var toMonster = _transform.position - _playerTransform.position;
             
             // 거리 추출, 항상 양수
             _toMonsterDistance = toMonster.magnitude;
@@ -114,7 +84,7 @@ namespace Knight
             // 몬스터가 바라보는 방향 계산
             // localScale.x가 양수면 오른쪽, 음수면 왼쪽을 바라보는 것으로 판단
             // Vector3.right는 +X축 방향
-            var moveDirection = Vector3.right * transform.localScale.x;
+            var moveDirection = Vector3.right * _transform.localScale.x;
             
             float dotValue = Vector3.Dot(moveDirection, toMonsterDirection);
             
@@ -140,16 +110,19 @@ namespace Knight
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag(Define.Tag.PLAYER))
+            switch (other.gameObject.tag)
             {
-                other
-                    .gameObject
-                    .GetComponent<KnightControllerKeyboard>()
-                    .TakeDamage(_atkDamage, other.GetComponent<BasePlayer>());
+                case Define.Tag.PLAYER:
+                {
+                    other
+                        .gameObject
+                        .GetComponent<KnightControllerKeyboard>()
+                        .TakeDamage(_atkDamage, other.GetComponent<BasePlayer>());
                 
-                // TODO 방향 맞추고 튕기기(유저는 튕길지는 좀 더 고민해보기)
-                var scaleX = transform.localScale.x * -1;
-                other.gameObject.transform.localScale = new Vector3(scaleX, 1, 1);
+                    var scaleX = _transform.localScale.x * -1;
+                    other.gameObject.transform.localScale = new Vector3(scaleX, 1, 1);
+                    break;
+                }
             }
         }
         
@@ -159,10 +132,57 @@ namespace Knight
                 || other.gameObject.CompareTag(Define.Tag.PLAYER))
                 return;
             
-            var scaleX = transform.localScale.x * -1;
-            transform.localScale = new Vector3(scaleX, 1f, 1f);
+            var scaleX = _transform.localScale.x * -1;
+            _transform.localScale = new Vector3(scaleX, 1f, 1f);
         }
         #endregion
+        
+        protected void Init(
+            float hp, float speed, float attackTime, float damage, 
+            float traceDistance, float attackDistance,
+            int gainExp)
+        {
+            if (!_configured)
+            {
+                var playGame = GameObject.Find(Define.UiObjectName.PLAY_GAME);
+                var items = playGame.transform.Find(Define.UiObjectName.ITEMS);
+                if (items == null)
+                {
+                    var go = new GameObject(Define.UiObjectName.ITEMS);
+                    go.transform.SetParent(playGame.transform, false);
+                    items = go.transform;
+                }
+                
+                _itemFolderTransform = items;
+            
+                _playerTransform = 
+                    GameObject.FindGameObjectWithTag(Define.Tag.PLAYER).transform;
+            
+                _animator = GetComponent<Animator>();
+                _collider2D = GetComponent<Collider2D>();
+                _transform = _animator.transform;
+            
+                _deathClip = Resources.Load<AudioClip>(Define.MONSTER_DEATH_PATH);
+                _configured = true;
+            }
+
+            _hp = hp;
+            _traceDistance = traceDistance;
+            _attackDistance = attackDistance;
+            
+            _currentHp = _hp;
+            _speed = speed;
+            _attackTime = attackTime;
+            _atkDamage = damage;
+            _gainExp = gainExp;
+
+            _currentHp = _hp;
+            
+            hpBar.fillAmount = _currentHp / _hp;
+            
+            _collider2D.enabled = false;
+            _isTrace = false;
+        }
 
         private void ChangeState(Define.MonsterState newState)
         {
@@ -177,7 +197,7 @@ namespace Knight
             if (_timer >= _idleTime)
             {
                 var scaleX = Random.Range(0, 2) == 1? 1 : -1;
-                transform.localScale = new Vector3(scaleX, 1, 1);
+                _transform.localScale = new Vector3(scaleX, 1, 1);
                 
                 _timer = 0f;
                 _patrolTime = Random.Range(1f, 5f);
@@ -198,16 +218,16 @@ namespace Knight
         
         private void Patrol()
         {
-            var x = transform.position.x;
-            
+            var x = _transform.position.x;
+
             if (x < _xMin)
-                transform.localScale = new Vector3(1, 1, 1);
+                _transform.localScale = new Vector3(1, 1, 1);
             
             else if (_xMax < x)
-                transform.localScale = new Vector3(-1, 1, 1);
+                _transform.localScale = new Vector3(-1, 1, 1);
             
-            transform.position += 
-                Vector3.right * transform.localScale.x * _speed * Time.deltaTime;
+            _transform.position += 
+                Vector3.right * _transform.localScale.x * _speed * Time.deltaTime;
             
             _timer += Time.deltaTime;
             
@@ -233,12 +253,11 @@ namespace Knight
         private void Trace()
         {
             // 몬스터 -> 플레이어 방향
-            var toPlayer = (_playerTransform.position - transform.position).normalized;
+            var toPlayer = (_playerTransform.position - _transform.position).normalized;
             var scaleX = toPlayer.x < 0f ? -1f : 1f;
             
-            transform.position += 
-                Vector3.right * scaleX * _speed * Time.deltaTime;
-            transform.localScale = new Vector3(scaleX, 1f, 1f);
+            _transform.position += Vector3.right * scaleX * _speed * Time.deltaTime;
+            _transform.localScale = new Vector3(scaleX, 1f, 1f);
             
             if (_toMonsterDistance > _traceDistance)
             {
@@ -268,14 +287,20 @@ namespace Knight
                 .GetInstance()
                 .PlaySound(Define.SoundType.Event, _deathClip);
             
-            // TODO 아이템 드랍
+            var item = DropItem.RandomItem();
+            var prefab = Resources.Load<GameObject>($"{Define.PREFABS_PATH}Item/{item.GetItemName()}");
+            var newItem =
+                Instantiate(prefab, _transform.position, Quaternion.identity, _itemFolderTransform);
+            
+            newItem.name = prefab.name;
+            newItem.GetComponent<DropItem>().Init(item);
             
             Player
                 .GetInstance()
                 .GainExp(_gainExp);
 
             _collider2D.enabled = false;
-            gameObject.SetActive(false);
+            gameObject.transform.parent.gameObject.SetActive(false);
             
             SpawnManager
                 .GetInstance()
@@ -292,7 +317,7 @@ namespace Knight
             _xMax = area.xMax;
             
             var spawnX = Random.Range(_xMin, _xMax);
-            transform.position = new Vector3(spawnX, y, 0f);
+            _transform.position = new Vector3(spawnX, y, 0f);
         }
 
         private IEnumerator AttackRoutine()
@@ -306,6 +331,7 @@ namespace Knight
             yield return null;
             
             var currentAnimationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+            
             yield return new WaitForSeconds(currentAnimationLength);
             
             _animator.SetBool(Define.AnimatorParameter.isRun, false);
@@ -313,9 +339,9 @@ namespace Knight
             // 벡터 연산의 방향성은 끝점 - 시작점 이다
             // 종점(플레이어) - 시작점(몬스터)
             // 몬스터 -> 플레이어 방향
-            var toPlayer = (_playerTransform.position - transform.position).normalized;
+            var toPlayer = (_playerTransform.position - _transform.position).normalized;
             var scaleX = toPlayer.x > 0 ? 1 : -1;
-            transform.localScale = new Vector3(scaleX, 1, 1);
+            _transform.localScale = new Vector3(scaleX, 1, 1);
 
             yield return new WaitForSeconds(_attackTime - 1f);
             

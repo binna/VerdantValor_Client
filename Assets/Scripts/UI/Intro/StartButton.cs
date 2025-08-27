@@ -36,14 +36,7 @@ namespace Knight.Intro
             GetComponent<Button>().interactable = false;
 
             var id = _idInputField.text;
-            
-            #region 데이터 세팅
-
-            if (!Player.GetInstance().FindPlayer(id))
-            {
-            }
-
-            #endregion
+            Player.GetInstance().FindPlayer(id);
             
             SceneManager.LoadScene((int)Define.SceneType.Town);
         }

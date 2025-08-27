@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace Knight.Adventure
 {
-    public class PushPlaform : MonoBehaviour
+    public class PushPlatform : MonoBehaviour
     {
+        [SerializeField] private float pushPower = 60;
+        
         private Animator _animator;
         private Rigidbody2D _rigidbody;
-
-        [SerializeField]
-        private float pushPower = 60;
         
         void Start()
         {
@@ -24,7 +23,7 @@ namespace Knight.Adventure
         private void PushCharacter()
         {
             _rigidbody.AddForceY(pushPower, ForceMode2D.Impulse);
-            _animator.SetTrigger("Push");
+            _animator.SetTrigger(Define.AnimatorParameter.push);
         }
     }
 }

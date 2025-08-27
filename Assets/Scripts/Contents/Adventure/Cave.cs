@@ -5,14 +5,9 @@ namespace Knight.Adventure
 {
     public class Cave : MonoBehaviour
     {
-        [SerializeField] 
-        private GameObject globalLight;
-        
-        [SerializeField] 
-        private GameObject userLight;
-        
-        [SerializeField]
-        private Object mainCamera;
+        [SerializeField] private GameObject globalLight;
+        [SerializeField] private GameObject userLight;
+        [SerializeField] private Object mainCamera;
 
         private bool _isEnter;
         

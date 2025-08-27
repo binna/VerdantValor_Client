@@ -6,8 +6,7 @@ namespace Knight
 {
     public class FadeRoutine : MonoBehaviour
     {
-        [SerializeField]
-        private Image fadePanel;
+        [SerializeField] private Image fadePanel;
 
         public IEnumerator Fade(float fadeTime, Color color, bool isFadeStart)
         {

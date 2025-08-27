@@ -5,14 +5,9 @@ namespace Knight.Town
 {
     public class JoystickController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
-        [SerializeField]
-        private KnightControllerJoystick knightController;
-
-        [SerializeField] 
-        private GameObject backgroundUI;
-
-        [SerializeField] 
-        private GameObject handlerUI;
+        [SerializeField] private KnightControllerJoystick knightController;
+        [SerializeField] private GameObject backgroundUI;
+        [SerializeField] private GameObject handlerUI;
 
         private Vector2 _startPosition;
         private Vector2 _currPosition;

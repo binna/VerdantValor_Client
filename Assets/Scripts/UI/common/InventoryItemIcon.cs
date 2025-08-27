@@ -9,30 +9,35 @@ namespace Knight
         private Image _icon;
         private Button _button;
         private TextMeshProUGUI _description;
-        private Item _item;
         
         private bool _isDataInit;
         private bool _isEmpty = true;
+        private int _index;
+        private Item _item;
 
-        public void AddItem(Item newItem)
+        public void AddItem(Item newItem, int index)
         {
             Init();
-
-            _item = newItem;
+            
             _isEmpty = false;
+            _item = newItem;
+            _index = index;
             
-            if (_icon == null || _button == null || _description == null || _item == null)
+            if (_icon == null || 
+                _button == null || 
+                _description == null || 
+                _item == null)
                 return;
-                
-            _icon.sprite = Resources
-                .Load<Sprite>($"{Define.IMAGES_PATH}Item/{_item.GetItemName()}");
             
+            _icon.sprite = 
+                Resources.Load<Sprite>(
+                    $"{Define.IMAGES_PATH}Item/{_item.GetItemName()}");
             _icon.color = new Color(1f, 1f, 1f, 1f);
             _description.text = _item.GetDescription();
             _button.interactable = !_isEmpty;
             _icon.gameObject.SetActive(!_isEmpty);
         }
-        
+
         #region 이벤트 함수
         private void OnEnable()
         {
@@ -43,9 +48,14 @@ namespace Knight
         
         public void Init()
         {
-            if (_isDataInit)
+            _isDataInit = true;
+            _isEmpty = true;
+            _item = null;
+            _index = 0;
+            
+            if (!_isDataInit)
                 return;
-
+            
             _isDataInit = true;
             
             var children = GetComponentsInChildren<Image>(true);
@@ -61,10 +71,6 @@ namespace Knight
 
             _button = GetComponent<Button>();
             _description = GetComponentInChildren<TextMeshProUGUI>();
-            
-            if (_button == null)
-                _button = gameObject.AddComponent<Button>();
-            
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(UseItem);
         }
@@ -73,16 +79,15 @@ namespace Knight
         {
             _isEmpty = true;
             
-            _button.interactable = !_isEmpty;
-
             _icon.sprite = null;
             _icon.color = new Color(1f, 1f, 1f, 0f);
-            _icon.gameObject.SetActive(!_isEmpty);
-            
-            _item.Use();
-            
-            _item = null;
             _description.text = string.Empty;
+            
+            _icon.gameObject.SetActive(!_isEmpty);
+            _button.interactable = !_isEmpty;
+            
+            _item.Use(_index);
+            _item = null;
         }
     }
 }

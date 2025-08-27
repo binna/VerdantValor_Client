@@ -7,14 +7,9 @@ namespace Knight.Adventure
 {
     public class KnightControllerKeyboard : BasePlayer
     {
-        [SerializeField] 
-        private Image hpBar;
-        
-        [SerializeField]
-        private Vector3 position;       // 마을 이동 위치
-
-        [SerializeField]
-        private Vector3 scale;
+        [SerializeField] private Image hpBar;
+        [SerializeField] private Vector3 position;      // 다음 씬 이동 위치
+        [SerializeField] private Vector3 scale;
         
         private readonly Vector2 _crouchOffset = new(0.03912544f, 0.5389824f); 
         private readonly Vector2 _crouchSize = new(0.6767006f, 0.9599333f);
@@ -141,11 +136,11 @@ namespace Knight.Adventure
             {
                 case Define.Tag.MONSTER:
                 {
-                    other
-                        .gameObject
-                        .GetComponent<BaseMonster>()
-                        .TakeDamage(Player.GetInstance().GetDamage());
-
+                     other
+                         .gameObject
+                         .GetComponent<BaseMonster>()
+                         .TakeDamage(Player.GetInstance().GetDamage());
+                    
                     if (_isCombo)
                     {
                         _isAttack = false;
@@ -225,7 +220,7 @@ namespace Knight.Adventure
             if (_isDead)
                 return;
             
-            if (Input.GetKeyDown(KeyCode.Space) && _isGround)
+            if (Input.GetKeyDown(KeyCode.LeftAlt) && _isGround)
             {
                 EndCombo();
                 _animator.SetTrigger(Define.AnimatorParameter.jump);
@@ -238,7 +233,7 @@ namespace Knight.Adventure
             if (_isDead)
                 return;
             
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
                 if (!_isAttack)
                 {

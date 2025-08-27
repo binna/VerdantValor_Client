@@ -39,6 +39,27 @@ namespace Knight
             return _eventAudio;
         }
 
+        public void PlaySound(Define.SoundType soundType, AudioClip audioClip)
+        {
+            switch (soundType)
+            {
+                case Define.SoundType.Bgm:
+                    _bgmAudio.clip = audioClip;
+                    _bgmAudio.loop = true;
+                    _bgmAudio.Play();
+                    break;
+                case Define.SoundType.Event:
+                    _bgmAudio.loop = false;
+                    _eventAudio.PlayOneShot(audioClip);
+                    break;
+            }
+        }
+        
+        public void StopBGMSound()
+        {
+            _bgmAudio.Stop();
+        }
+        
         #region 이벤트 함수
         private void Awake()
         {
@@ -74,26 +95,5 @@ namespace Knight
             }
         }
         #endregion
-
-        public void PlaySound(Define.SoundType soundType, AudioClip audioClip)
-        {
-            switch (soundType)
-            {
-                case Define.SoundType.Bgm:
-                    _bgmAudio.clip = audioClip;
-                    _bgmAudio.loop = true;
-                    _bgmAudio.Play();
-                    break;
-                case Define.SoundType.Event:
-                    _bgmAudio.loop = false;
-                    _eventAudio.PlayOneShot(audioClip);
-                    break;
-            }
-        }
-        
-        public void StopBGMSound()
-        {
-            _bgmAudio.Stop();
-        }
     }
 }

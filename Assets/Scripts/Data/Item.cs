@@ -13,13 +13,15 @@ namespace Knight
         
         public int GetId() => id;
         
+        public Define.ItemType GetItemType() => type;
+        
         public string GetItemName() => name;
         
         public string GetDescription() => $"{GetTypeDescription()}({value})";
 
-        public void Use()
+        public void Use(int index = 0)
         {
-            Player.GetInstance().UseItem(type, value);
+            Player.GetInstance().UseItem(type, value, index);
         }
         
         private string GetTypeDescription()
