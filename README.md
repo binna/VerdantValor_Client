@@ -18,7 +18,9 @@
 </p>
 
 <p align="center">
-    🎥 <b>Watch Gameplay on YouTube</b> → 추후 업로드 예정
+  <a href="https://www.youtube.com/watch?v=jal_0tfmpjY" target="_blank">
+    🎥 <b>Watch Gameplay on YouTube</b>
+  </a>
 </p>
 
 <br><br>
