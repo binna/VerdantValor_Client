@@ -160,7 +160,7 @@ namespace Knight
         public static MonsterSpawnArea[] monsterPositions =
         {
             new(-16, 16, -3),
-            new(3, 28, 31),
+            new(3, 18, 31),
             new(33, 50, 9),
             new(60, 100, 9),
             new(91, 102, 14),
