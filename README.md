@@ -28,14 +28,16 @@
 ## 📑 Table of Contents
 
 1. 🎮 [Gameplay](#gameplay)
-2. 🧭 [Main Feature](#main-feature)
-3. 👤 [Player Balance](#player-balance)
-4. 🧟 [Monster Balance](#monster-balance)
-5. 🛠️ [Tech Stack](#tech-stack)
-6. 🧪 [Technical](#technical)
-7. 🐞 [Known Issues & Solutions](#known-issues--solutions)
-8. 🎨 [Art Resources](#art-resources)
-9. 🎵 [Sound Resources](#sound-resources)
+2. 🗺️ [Scene Flow](#scene-flow)
+3. 🧭 [Main Feature](#main-feature)
+4. 🧙 [Player Balance](#player-balance)
+5. 👾 [Monster Balance](#monster-balance)
+6. 🛠️ [Tech Stack](#tech-stack)
+7. 🧪 [Technical](#technical)
+8. 🐞 [Known Issues & Solutions](#known-issues--solutions)
+9. 🎨 [Art Resources](#art-resources)
+10. 🎵 [Sound Resources](#sound-resources)
+11. 🗺️ [씬 구성도](#씬-구성도)
 
 <hr>
 
@@ -54,6 +56,11 @@
     
   - 숙이기: `↓` (방향키)
   
+<br><br>
+
+## Scene Flow
+<img width="903" height="707" alt="image" src="https://github.com/user-attachments/assets/4673a9d5-ad31-4952-bdf3-205f54eb477a" />
+
 <br><br>
 
 ## Main Feature
