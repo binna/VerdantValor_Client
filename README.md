@@ -39,7 +39,6 @@
 8. 🐞 [Known Issues & Solutions](#known-issues--solutions)
 9. 🎨 [Art Resources](#art-resources)
 10. 🎵 [Sound Resources](#sound-resources)
-11. 🗺️ [씬 구성도](#씬-구성도)
 
 <hr>
 
