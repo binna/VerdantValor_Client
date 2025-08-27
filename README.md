@@ -175,11 +175,13 @@
     
   - [AdventureBGM](https://pixabay.com/music/upbeat-black-box-hypocrisy-112160/) → 전투 배경 음악
     
-  - [Portal](https://pixabay.com/sound-effects/magic-teleport-whoosh-352764/) → 포탈 이동 소리
+  - [Portal](https://pixabay.com/sound-effects/magic-teleport-whoosh-352764/) → 포탈 이동 효과음
     
-  - [Gameover](https://pixabay.com/sound-effects/8bit-lose-life-sound-wav-97245/) → 캐릭터 죽는 소리
+  - [Gameover](https://pixabay.com/sound-effects/8bit-lose-life-sound-wav-97245/) → 캐릭터 사망 효과음
   
-  - [MonsterDie](https://pixabay.com/sound-effects/super-deep-growl-86749/) → 몬스터 죽는 소리
+  - [MonsterDie](https://pixabay.com/sound-effects/super-deep-growl-86749/) → 몬스터 사망 효과음
+    
+  - [ItemPickup](https://pixabay.com/sound-effects/item-pickup-37089/) → 아이템 획득 효과음
   
 - Asset Store
   - [TownBGM](https://assetstore.unity.com/packages/audio/music/electronic/8-bit-rpg-adventure-music-pack-184726), Track: 04 Overworld → 마을 배경 음악  
