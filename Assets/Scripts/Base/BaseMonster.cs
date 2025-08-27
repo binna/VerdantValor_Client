@@ -31,7 +31,6 @@ namespace Knight
         private int _gainExp;
         
         private Transform _playerTransform;
-        private Transform _itemFolderTransform;
         private Transform _transform;
         
         private Animator _animator;
@@ -144,17 +143,6 @@ namespace Knight
         {
             if (!_configured)
             {
-                var playGame = GameObject.Find(Define.UiObjectName.PLAY_GAME);
-                var items = playGame.transform.Find(Define.UiObjectName.ITEMS);
-                if (items == null)
-                {
-                    var go = new GameObject(Define.UiObjectName.ITEMS);
-                    go.transform.SetParent(playGame.transform, false);
-                    items = go.transform;
-                }
-                
-                _itemFolderTransform = items;
-            
                 _playerTransform = 
                     GameObject.FindGameObjectWithTag(Define.Tag.PLAYER).transform;
             
@@ -286,14 +274,9 @@ namespace Knight
             SoundManager
                 .GetInstance()
                 .PlaySound(Define.SoundType.Event, _deathClip);
-            
-            var item = DropItem.RandomItem();
-            var prefab = Resources.Load<GameObject>($"{Define.PREFABS_PATH}Item/{item.GetItemName()}");
-            var newItem =
-                Instantiate(prefab, _transform.position, Quaternion.identity, _itemFolderTransform);
-            
-            newItem.name = prefab.name;
-            newItem.GetComponent<DropItem>().Init(item);
+
+            DropItem
+                .CreateDropItem(_transform.position);
             
             Player
                 .GetInstance()
@@ -302,9 +285,7 @@ namespace Knight
             _collider2D.enabled = false;
             gameObject.transform.parent.gameObject.SetActive(false);
             
-            SpawnManager
-                .GetInstance()
-                .DeadMonster();
+            SpawnManager.GetInstance().DeadMonster();
         }
         
         private void RandomPosition()

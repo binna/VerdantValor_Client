@@ -100,7 +100,6 @@ namespace Knight
             if (users
                 .TryGetValue(Player.GetInstance().GetId(), out var userData))
             {
-                userData.SetItems(Player.GetInstance().GetItems());
                 userData.SetGold(Player.GetInstance().GetGold());
                 userData.SetExp(Player.GetInstance().GetExp());
                 userData.SetCurrentHp(Player.GetInstance().GetCurrentHp());
@@ -108,13 +107,22 @@ namespace Knight
             else
             {
                 userData = new User();
-                userData.SetItems(Player.GetInstance().GetItems());
                 userData.SetId(Player.GetInstance().GetId());
                 userData.SetGold(Player.GetInstance().GetGold());
                 userData.SetExp(Player.GetInstance().GetExp());
                 userData.SetCurrentHp(Player.GetInstance().GetCurrentHp());
                 users.Add(Player.GetInstance().GetId(), userData);
             }
+            
+            var newItems =  Player.GetInstance().GetItems();
+            var packItems = new User.Item[Define.INVNETORY_COUNT];
+            for (var i = 0; i < Define.INVNETORY_COUNT; i++)
+            {
+                var temp = newItems[i].GetId();
+                packItems[i] = new User.Item();
+                packItems[i].SetId(temp);
+            }
+            userData.SetItems(packItems);
 
             var json = new UserGameData { users = new List<User>() };
 

@@ -6,13 +6,23 @@ namespace Knight
     [Serializable]
     public class User
     {
+        [Serializable]
+        public class Item
+        {
+            [SerializeField] private int id;
+
+            public int GetId() => id;
+            
+            public int SetId(int newId) => id = newId;
+        }
+        
         [SerializeField] private Item[] items = new Item[Define.INVNETORY_COUNT];
         [SerializeField] private string id;
         [SerializeField] private int gold;
         [SerializeField] private int exp;
         [SerializeField] private float currentHp;
 
-        public Item[] GetItems() => items;
+        public Item GetItem(int index) => items[index];
         
         public string GetId() => id;
         

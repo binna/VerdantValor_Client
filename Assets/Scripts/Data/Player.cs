@@ -11,18 +11,17 @@ namespace Knight
         private const float SPEED = 4.5f;
         private const float JUMP_POWER = 12f;
                 
-        private Item[] _items = new Item[Define.INVNETORY_COUNT];
+        private readonly Item[] _items = new Item[Define.INVNETORY_COUNT];
+        private readonly AudioClip _levelUpClip;
+        
         private string _id;
         private int _gold;
         private int _exp;
         private int _hp;
         private float _currentHp;
         private float _atkDamage;
-        
         private float _currentAtkDamage;
 
-        private AudioClip _levelUpClip;
-        
         private InventoryItemIcon[] _inventoryItemIcons;
         private TMP_Text _idText;
         private TMP_Text _levelText;
@@ -70,7 +69,18 @@ namespace Knight
                 .users
                 .TryGetValue(inputId, out var player))
             {
-                _items = player.GetItems();
+                for (var i = 0; i < Define.INVNETORY_COUNT; i++)
+                {
+                    var temp = player.GetItem(i).GetId();
+                    if (temp == 0)
+                    {
+                        _items[i] = new Item();
+                        continue;
+                    }
+                    
+                    _items[i] = GameDataManager.items[temp];
+                }
+                
                 _id = player.GetId();
                 _gold = player.GetGold();
                 _exp = player.GetExp();
@@ -148,7 +158,7 @@ namespace Knight
             {
                 case Define.ItemType.Gold:
                 {
-                    newItem.Use();
+                    newItem.Use(Define.IMMEDIATE_PICKUP);
                     return true;
                 }
                 case Define.ItemType.PotionAtk:
@@ -176,6 +186,8 @@ namespace Knight
 
         public void UseItem(Define.ItemType itemType, int value, int index)
         {
+            Debug.Log($"[SystemNotice] {itemType} 사용");
+            
             switch (itemType)
             {
                 case Define.ItemType.PotionHp:
@@ -183,23 +195,25 @@ namespace Knight
                     _hpBar.fillAmount = GetHpRatio();
                     break;
                 case Define.ItemType.PotionAtk:
-                    // TODO 갯수 제한 걸기 및 유효기간 걸기
+                    Debug.Log($"[Before] {_currentAtkDamage}");
                     _currentAtkDamage += value;
+                    Debug.Log($"[After] {_currentAtkDamage}");
                     break;
                 case Define.ItemType.Gold:
                     _gold += value;
                     break;
             }
-
-            if (index != 0)
-            {
-                InitInventoryItemIcon(index);
-                Debug.Log(">>>>>>>>");
-            }
-
-            SetHUDData();
+            
+            if (index != Define.IMMEDIATE_PICKUP)
+                _items[index] = new Item();
         }
-        
+
+        public void EndBuff(int value)
+        {
+            _currentAtkDamage -= value;
+            Debug.Log($"[End Buff] {_currentAtkDamage}");
+        }
+
         private int GetLevel()
         {
             var level = 1;
@@ -221,7 +235,6 @@ namespace Knight
             
             for (var i = 0; i < Define.INVNETORY_COUNT; i++)
             {
-                Debug.Log(_items[i]);
                 if (_items[i].GetId() == 0)
                 {
                     _inventoryItemIcons[i].Init();
@@ -230,12 +243,6 @@ namespace Knight
 
                 _inventoryItemIcons[i].AddItem(_items[i], i);
             }
-        }
-
-        private void InitInventoryItemIcon(int index)
-        {
-            _items[index] = new Item();
-            _inventoryItemIcons[index].Init();
         }
 
         private void SetHUD(TMP_Text idText, TMP_Text levelText, TMP_Text goldText)
@@ -254,11 +261,10 @@ namespace Knight
         
         private void InitData()
         {
-            if (!_isDataInit)
+            if (_isDataInit)
                 return;
             
             _isDataInit = true;
-            
             _currentAtkDamage = _atkDamage;
         }
     }

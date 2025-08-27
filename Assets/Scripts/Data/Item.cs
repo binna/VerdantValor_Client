@@ -10,6 +10,7 @@ namespace Knight
         [SerializeField] private Define.ItemType type;
         [SerializeField] private string name; 
         [SerializeField] private int value;
+        [SerializeField] private float timer;
         
         public int GetId() => id;
         
@@ -17,13 +18,17 @@ namespace Knight
         
         public string GetItemName() => name;
         
+        public int GetValue() => value;
+        
+        public float GetTimer() => timer;
+        
         public string GetDescription() => $"{GetTypeDescription()}({value})";
 
-        public void Use(int index = 0)
+        public void Use(int index)
         {
             Player.GetInstance().UseItem(type, value, index);
         }
-        
+
         private string GetTypeDescription()
         {
             return type switch

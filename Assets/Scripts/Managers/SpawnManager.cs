@@ -31,17 +31,18 @@ namespace Knight
             var items = playGame.transform.Find(Define.UiObjectName.MONSTERS);
             if (items == null)
             {
-                var go = new GameObject(Define.UiObjectName.MONSTERS);
-                go.transform.SetParent(playGame.transform, false);
-                items = go.transform;
+                var newGameObject = new GameObject(Define.UiObjectName.MONSTERS);
+                newGameObject.transform.SetParent(playGame.transform, false);
+                items = newGameObject.transform;
             }
                 
             _monstersFolderTransform = items;
 
             foreach (var type in Define.monsterType)
             {
-                var prefab = Resources.Load<GameObject>($"{Define.PREFABS_PATH}Monster/{type}");
-                var count = Random.Range(0, Define.MONSTER_LIMIT);
+                var prefab = Resources.Load<GameObject>(
+                    $"{Define.PREFABS_PATH}Monster/{type}");
+                var count = Random.Range(Define.MONSTER_LIMIT / 2, Define.MONSTER_LIMIT);
                 
                 for (var i = 0; i < count; i++)
                 {
@@ -55,7 +56,9 @@ namespace Knight
             
             _totalCount = _monsters.Count;
         }
-
+        
+// ReSharper disable IteratorNeverReturns
+#pragma warning disable CS0162
         private IEnumerator Start()
         {
             while (true)
@@ -85,6 +88,8 @@ namespace Knight
                 }
             }
         }
+#pragma warning restore CS0162
+// ReSharper restore IteratorNeverReturns
         #endregion
     }
 }

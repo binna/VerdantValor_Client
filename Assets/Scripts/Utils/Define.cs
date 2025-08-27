@@ -138,6 +138,7 @@ namespace Knight
         public const string GAMEOVER_PATH = "Sounds/Gameover";
         public const string MONSTER_DEATH_PATH = "Sounds/MonsterDie";
         public const string LEVEL_UP_PATH = "Sounds/LevelUp";
+        public const string ITEM_PICKUP_PATH = "Sounds/ItemPickup";
         
         // speed
         public const float DIALOG_TYPING_SPEED = 0.05f;
@@ -166,7 +167,10 @@ namespace Knight
             new(49, 72, 14),
             new(30, 42, 12)
         };
-        public static int MONSTER_LIMIT = 10;
+        public static int MONSTER_LIMIT = 15;
         public static readonly int monsterPosCnt = monsterPositions.Length;
+        
+        // Item
+        public static int IMMEDIATE_PICKUP = 99;
     }
 }

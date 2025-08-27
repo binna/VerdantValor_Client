@@ -11,7 +11,6 @@ namespace Knight.Adventure
                 .PlaySound(
                     Define.SoundType.Bgm, 
                     Resources.Load<AudioClip>(Define.ADVENTURE_BGM_PATH));
-            Player.GetInstance().FindPlayer("shine94"); // TODO 삭제
             Player
                 .GetInstance()
                 .InitHUD();
