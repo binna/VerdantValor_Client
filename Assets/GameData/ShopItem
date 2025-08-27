@@ -14,15 +14,39 @@
         },
         {
             "id": 3,
-            "title": "공격력 강화 3",
-            "price": 700,
+            "title": "체력 50",
+            "price": 2600,
             "itemId": 3
         },
         {
             "id": 4,
+            "title": "체력 100",
+            "price": 5200,
+            "itemId": 4
+        },
+        {
+            "id": 5,
+            "title": "공격력 강화 3",
+            "price": 700,
+            "itemId": 5
+        },
+        {
+            "id": 6,
             "title": "공격력 강화 5",
             "price": 1500,
-            "itemId": 4
+            "itemId": 6
+        },
+        {
+            "id": 7,
+            "title": "공격력 강화 10",
+            "price": 3200,
+            "itemId": 7
+        },
+        {
+            "id": 8,
+            "title": "공격력 강화 15",
+            "price": 6500,
+            "itemId": 8
         }
     ]
 }
