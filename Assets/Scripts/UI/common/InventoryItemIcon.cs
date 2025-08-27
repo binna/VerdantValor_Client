@@ -96,6 +96,7 @@ namespace Knight
         
         private IEnumerator RevertAtkBuffAfterRoutine(int value, float secTimer)
         {
+            Debug.Log($"[SystemNotice] value:{_item.GetValue()}/Timer:{_item.GetTimer()}");
             yield return new WaitForSeconds(secTimer);
             Player.GetInstance().EndBuff(value);
         }

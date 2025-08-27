@@ -10,6 +10,8 @@ namespace Knight.Adventure
         [SerializeField] private Image hpBar;
         [SerializeField] private Vector3 position;      // 다음 씬 이동 위치
         [SerializeField] private Vector3 scale;
+
+        private const int COMBO_DAMAGE = 2;
         
         private readonly Vector2 _crouchOffset = new(0.03912544f, 0.5389824f); 
         private readonly Vector2 _crouchSize = new(0.6767006f, 0.9599333f);
@@ -41,7 +43,6 @@ namespace Knight.Adventure
         {
             if (_isCombo)
             {
-                Player.GetInstance().SetDamage(5f);
                 _animator.SetBool(Define.AnimatorParameter.isCombo, true);
                 return;
             }
@@ -143,8 +144,13 @@ namespace Knight.Adventure
                     
                     if (_isCombo)
                     {
+                        other
+                            .gameObject
+                            .GetComponent<BaseMonster>()
+                            .TakeDamage(COMBO_DAMAGE);
                         _isAttack = false;
                         _isCombo = false;
+                        Debug.Log($"[SystemNotice] Combo Attack {COMBO_DAMAGE}");
                     }
 
                     var scaleX = transform.localScale.x * -1;
@@ -238,9 +244,6 @@ namespace Knight.Adventure
                 if (!_isAttack)
                 {
                     _isAttack = true;
-                    Player
-                        .GetInstance()
-                        .SetDamage(3f);
                     _animator.SetTrigger(Define.AnimatorParameter.attack);
                     return;
                 }

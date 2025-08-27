@@ -63,7 +63,7 @@ namespace Knight
         {
             while (true)
             {
-                var spawnTime = Random.Range(3f, 30f);
+                var spawnTime = Random.Range(3f, 15f);
                 
                 yield return new WaitForSeconds(spawnTime);
             

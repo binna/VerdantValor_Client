@@ -36,10 +36,10 @@ namespace Knight.Intro
             GetComponent<Button>().interactable = false;
 
             var id = _idInputField.text;
-            if (!Player.GetInstance().FindPlayer(id))
-            {
+            if (Player.GetInstance().FindPlayer(id))
+                Debug.Log($"[SystemNotice] {id} 로그인 완료");
+            else
                 Debug.Log($"[SystemNotice] {id} 신규 회원가입");
-            }
 
             SceneManager.LoadScene((int)Define.SceneType.Town);
         }

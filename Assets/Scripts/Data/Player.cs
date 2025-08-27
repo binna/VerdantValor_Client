@@ -60,14 +60,22 @@ namespace Knight
                         $"{Define.UiName.HUD}", Define.UiObjectName.TXT_GOLD));
             SetHUDData();
         }
+        
+        public void SetHUDData()
+        {
+            _idText.text = _id;
+            _levelText.text = $"{GetLevel()}";
+            _goldText.text = $"{_gold}";
+        }
 
         public bool FindPlayer(string inputId)
         {
             GetInstance()._id = inputId;
             
-            if (GameDataManager
-                .users
-                .TryGetValue(inputId, out var player))
+            var isUserFind = GameDataManager
+                .users.TryGetValue(inputId, out var player);
+            
+            if (isUserFind)
             {
                 for (var i = 0; i < Define.INVNETORY_COUNT; i++)
                 {
@@ -86,20 +94,36 @@ namespace Knight
                 _exp = player.GetExp();
                 _currentHp = player.GetCurrentHp();
             }
-
+            else
+            {
+                for (var i = 0; i < Define.INVNETORY_COUNT; i++)
+                {
+                    _items[i] = new Item();
+                }
+                
+                Debug.LogError($"Player not found Id : {inputId}");
+            }
+            
             var level = GetLevel();
-            if (GameDataManager
+            var isLevel = GameDataManager
                 .playerStats
-                .TryGetValue(level, out var playerStats))
+                .TryGetValue(level, out var playerStats);
+            
+            if (isLevel)
             {
                 _hp = playerStats.GetHp();
                 _atkDamage = playerStats.GetAtkDamage();
                 InitData();
-                return true;
+                
+                if (!isUserFind)
+                    _currentHp = playerStats.GetHp();
+            }
+            else
+            {
+                Debug.LogError($"Player not found Stats : {level}");
             }
             
-            Debug.LogError($"Player not found Id : {inputId}/ Level : {level}");
-            return false;
+            return isUserFind && isLevel;
         }
 
         public Item[] GetItems() => _items;
@@ -130,8 +154,6 @@ namespace Knight
             return _currentHp / _hp;
         }
         
-        public void SetDamage(float damage) => _currentAtkDamage = damage;
-        
         public void TakeDamage(float damage) => _currentHp -= damage;
         
         public void RecoveryHp() => _currentHp += Define.RECOVERY_HP;
@@ -148,7 +170,11 @@ namespace Knight
 
             if (newLevel > nowLevel)
             {
-                SoundManager.GetInstance().PlaySound(Define.SoundType.Event, _levelUpClip);
+                SetHUDData();
+                SoundManager
+                    .GetInstance()
+                    .PlaySound(Define.SoundType.Event, _levelUpClip);
+                Debug.Log($"[SystemNotice] Level Up {GetLevel()}");
             }
         }
         
@@ -186,12 +212,14 @@ namespace Knight
 
         public void UseItem(Define.ItemType itemType, int value, int index)
         {
-            Debug.Log($"[SystemNotice] {itemType} 사용");
+            Debug.Log($"[SystemNotice] {itemType} 사용({value})");
             
             switch (itemType)
             {
                 case Define.ItemType.PotionHp:
                     _currentHp += value;
+                    if (_hp < _currentHp)
+                        _currentHp = _hp;
                     _hpBar.fillAmount = GetHpRatio();
                     break;
                 case Define.ItemType.PotionAtk:
@@ -201,6 +229,7 @@ namespace Knight
                     break;
                 case Define.ItemType.Gold:
                     _gold += value;
+                    SetHUDData();
                     break;
             }
             
@@ -250,13 +279,6 @@ namespace Knight
             _idText = idText;
             _levelText = levelText;
             _goldText = goldText;
-        }
-        
-        private void SetHUDData()
-        {
-            _idText.text = _id;
-            _levelText.text = $"{GetLevel()}";
-            _goldText.text = $"{_gold}";
         }
         
         private void InitData()

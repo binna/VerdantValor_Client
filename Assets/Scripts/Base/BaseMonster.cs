@@ -55,16 +55,17 @@ namespace Knight
 
         public IEnumerator SpawnMonster()
         {
-            gameObject.transform.parent.gameObject.SetActive(true);
+            _currentHp = _hp;
+            hpBar.fillAmount = _currentHp / _hp;
             
             yield return null;
             
+            gameObject.transform.parent.gameObject.SetActive(true);
             RandomPosition();
             
             yield return null;
             
             _collider2D.enabled = true;
-            _currentHp = _hp;
             _isTrace = false;
         }
 

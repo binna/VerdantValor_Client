@@ -36,13 +36,15 @@ namespace Knight
                     UIManager
                         .GetInstance()
                         .ShowAlarm("구매에 성공했습니다.");
-                    return;
                 }
             }
-
-            UIManager
-                .GetInstance()
-                .ShowAlarm("구매에 실패했습니다.<br>돈이 부족합니다.");
+            else
+            {
+                UIManager
+                    .GetInstance()
+                    .ShowAlarm("구매에 실패했습니다.<br>돈이 부족합니다.");
+            }
+            Player.GetInstance().SetHUDData();
         }
     }
 }
