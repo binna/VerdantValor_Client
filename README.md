@@ -187,7 +187,7 @@
 </details>
 
 <details>
-<summary>오브젝트 풀링 개선 및 동적 확장</summary>
+<summary>오브젝트 풀링 개선</summary>
 
   - **문제 (Issue)**
     - 몬스터를 하이라키에 수동으로 배치/생성해야 하는 비효율적인 관리 방식
