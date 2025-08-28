@@ -18,7 +18,9 @@
 </p>
 
 <p align="center">
-    🎥 <b>Watch Gameplay on YouTube</b> → 추후 업로드 예정
+  <a href="https://www.youtube.com/watch?v=jal_0tfmpjY" target="_blank">
+    🎥 <b>Watch Gameplay on YouTube</b>
+  </a>
 </p>
 
 <br><br>
@@ -37,7 +39,6 @@
 8. 🐞 [Known Issues & Solutions](#known-issues--solutions)
 9. 🎨 [Art Resources](#art-resources)
 10. 🎵 [Sound Resources](#sound-resources)
-11. 🗺️ [씬 구성도](#씬-구성도)
 
 <hr>
 
@@ -128,10 +129,41 @@
 ## Technical
 
 <details>
-<summary></summary>
+<summary>왕복 이동 플랫폼 (Move Platform)</summary>
   
-  - 
+  - Mathf.Cos(`theta`) 기반의 왕복 이동 로직으로 수평/수직 플랫폼 이동 구현
+  - `speed`와 `power` 값으로 속도와 이동 범위를 손쉽게 조정 가능하도록 구현
+  - `Time.deltaTime` 기반의 계산으로 프레임 환경과 무관한 부드러운 이동 지원
+  - 단순한 구조로 유지 보수와 커스터마이징에 용이하도록 구현
   
+</details>
+
+<details>
+<summary>점프 플랫폼 (Push Platform)</summary>
+  
+  - 유저가 플랫폼 트리거에 진입 시 위쪽에 힘을 즉시 가해 점프 동작 구현
+  - Animator 트리거와 연동해 플랫폼 애니메이션을 자연스럽게 재생
+  - `pushPower`를 조절해 다양한 강도의 점프 연출 가능
+  
+</details>
+
+<details>
+<summary>사다리 (Ladder)</summary>
+
+  - 유저가 사다리 범위에 진입 시 중력을 0으로 전환해 캐릭터가 자연스럽게 사다리에 고정되도록 구현
+  - 상/하 입력에 따라 Y축 이동을 지원하여 부드럽고 자유로운 상하 이동 가능
+  - 사다리 범위를 벗어나면 중력을 복원해 정상적인 이동 상태로 매끄럽게 전환
+  - 단순한 상태 플래그(`_isLadder`)로 캐릭터 상태를 관리하여 유지 보수와 확장이 용이
+
+</details>
+
+<details>
+<summary>동굴 연출 시스템</summary>
+  
+  - 유저가 동굴 트리거에 진입하면 카메라 크기를 조절해 자연스러운 줌인/줌아웃 연출 구현
+  - 동굴 진입 시 Global Light 비활성화하고 유저 주변에만 빛을 비춰 스포트라이트 효과로 몰입감 강화
+  - 동굴 트리거 기반으로 진입/이탈을 감지해 조명, 카메라, 캐릭터 상태를 원복하여 부드러운 전환 제공  
+    
 </details>
 
 <br><br>
@@ -139,10 +171,88 @@
 ## Known Issues & Solutions
 
 <details>
-<summary></summary>
+<summary>씬 이동 시 데이터 초기화 문제</summary>
   
-  - 
+  - **문제 (Issue)**
+    - 씬 전환 시 유저 상태나 게임 데이터 같은 핵심 지속 데이터가 초기화
   
+  - **해결 (Solution)**
+    - 공통 데이터는 `static`으로 관리해 씬 전환과 무관하게 유지
+    - 각 씬에 `@InitSetting` 오브젝트를 두어 HUD, BGM, UI 등 씬 전환 시 필요한 요소만 안전하게 재초기화
+
+  - **성과 (Outcome)**
+    - 씬 이동 후에도 핵심 데이터가 안정적으로 유지
+    - 중복 로드나 데이터 손실을 방지하여 사용자 경험의 안정성을 확보
+
+</details>
+
+<details>
+<summary>오브젝트 풀링 도입</summary>
+
+  - **문제 (Issue)**
+    - 몬스터를 Hierarchy에 수동으로 배치/생성해야 하는 비효율적인 관리 방식
+    - 몬스터 수를 랜덤하게 제어하지 못해 게임 몰입감과 재미가 제한
+  
+  - **해결 (Solution)**
+    - 오브젝트 풀링을 적용해 몬스터 타입별 최대 수를 제한하고, 최소 ~ 최대 범위 내에서 랜덤한 수량을 프리팹을 이용해 사전 생성
+    - 코루틴으로 랜덤 시간 간격에 맞춰 비활성 개체를 활성화(스폰)하여 동적인 전투 흐름 구현
+
+  - **성과 (Outcome)**
+    - 수동 생성 작업을 자동화해 유지보수 효율 대폭 향상
+    - 사전 생성과 재사용으로 Instantiate과 Destroy의 빈도 감소 → 프레임 안정성 확보
+    - 스폰 간격 및 수량의 랜덤화로 전투의 변주와 몰입감 강화
+    - 활성/비활성 전환 기반 관리로 GC 부담 최소화
+
+</details>
+
+<details>
+<summary>아이템 드랍 및 공격력 강화에 타이머 기능 추가</summary>
+
+- **문제 (Issue)**  
+  - 몬스터가 사망했을 때 아이템이 즉시 드랍되어, 몬스터 사망 사운드와 아이템 드랍 사운드가 겹쳐 연출이 부자연스러움
+  - 강화 아이템 사용 시 공격력 증가 효과가 무기한 유지되어 전투 밸런스가 무너지고 게임의 난이도 조절이 불가능
+
+- **해결 (Solution)**  
+  - 코루틴을 활용해 일정 시간 후 아이템이 드랍되도록 로직을 개선해 사운드 연출을 자연스럽게 조정
+  - 강화 효과의 지속 시간을 코루틴 타이머로 관리하여, 일정 시간이 지나면 자동으로 효과가 해제되도록 구현
+
+- **성과 (Outcome)**
+  - 드랍 타이밍이 플레이 흐름과 어울리도록 개선되어 게임 몰입감 향상
+  - 강화 효과가 일정 시간만 유지되도록 하여 전투 밸런스를 유지하고 게임 난이도를 안정적으로 조절 가능
+
+</details>
+
+<details>
+<summary>코루틴 안정화</summary>
+  
+  - **문제 (Issue)**
+    - 드랍 아이템의 타이머가 해당 아이템 객체에 종속되어 있어, 아이템이 삭제되면 타이머도 함께 종료되는 문제가 발생
+    - 몬스터 사망 후 아이템 드랍 처리 시 실행되는 코루틴도 몬스터 객체가 비활성화되면 강제로 종료될 위험 존재
+    
+  - **해결 (Solution)**
+    - 삭제되지 않는 `@SoundManager`에서 코루틴을 실행하도록 구조 변경
+      
+  - **성과 (Outcome)**
+    - 타이머 중단 버그가 완전히 해소되어 게임 안정성 대폭 향상
+    - 몬스터 드랍 처리 중 발생할 수 있는 에러 위험도 제거되어 전체 시스템 안정성 향상
+      
+</details>
+
+<details>
+<summary>하드코딩 데이터 구조를 JSON 기반으로 전환</summary>
+
+  - **문제 (Issue)**
+    - 몬스터, 아이템, 경험치 등 게임 데이터를 코드 안에 직접 작성해 관리
+    - 데이터 변경 시마다 재빌드가 필요해 유지보수가 불편
+  
+  - **해결 (Solution)**
+    - 데이터를 JSON 파일로 분리하고 `JsonUtility`를 이용하여 런타임에 데이터를 읽고 쓸 수 있도록 개선
+
+  - **성과 (Outcome)**
+    - 밸런스나 데이터 변경을 파일만 수정해도 즉시 반영 가능해 운영 효율 상승
+    - 코드 수정 없이 운영할 수 있어 유지보수 효율 대폭 향상
+    - 빌드 환경에서도 안정적으로 동작해 실무와 비슷한 데이터 관리 경험 확보
+
 </details>
 
 <br><br>
@@ -189,6 +299,8 @@
   - [MonsterDie](https://pixabay.com/sound-effects/super-deep-growl-86749/) → 몬스터 사망 효과음
     
   - [ItemPickup](https://pixabay.com/sound-effects/item-pickup-37089/) → 아이템 획득 효과음
+    
+  - [LevelUp](https://pixabay.com/sound-effects/game-level-complete-143022/) → 레벨업 효과음
   
 - Asset Store
   - [TownBGM](https://assetstore.unity.com/packages/audio/music/electronic/8-bit-rpg-adventure-music-pack-184726), Track: 04 Overworld → 마을 배경 음악  
