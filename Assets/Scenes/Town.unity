@@ -7767,7 +7767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c9111b2d448604abfaf3f7dcbb6011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: 1
+  scene: 2
   portalEffect: {fileID: 6441873369262268840}
   player: {fileID: 1372053306}
   position: {x: -20.16, y: -3.88, z: 0}

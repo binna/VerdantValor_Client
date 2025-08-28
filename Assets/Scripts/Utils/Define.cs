@@ -21,9 +21,9 @@ namespace Knight
 
         public enum SceneType
         {
-            Town = 0,
+            Intro = 0,
+            Town,
             Adventure,
-            Intro
         }
 
         public enum SoundType

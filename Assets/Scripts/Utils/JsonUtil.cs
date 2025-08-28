@@ -46,6 +46,6 @@ namespace Knight
         }
         
         private static string GetPath(string fileName)
-            => Path.Combine(Application.dataPath, $"GameData/{fileName}");
+            => Path.Combine(Application.streamingAssetsPath, $"GameData/{fileName}");
     }
 }

@@ -17,7 +17,7 @@ namespace Knight
         private static int _itemsCount;
 
         public static int GetItemsCount()
-        {
+        {   
             return _itemsCount;
         }
         
@@ -30,6 +30,14 @@ namespace Knight
         private void OnApplicationQuit()
         {
             SaveUserDataToJson();
+        }
+        
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
         #endregion
         
