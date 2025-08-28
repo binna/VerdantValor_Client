@@ -129,22 +129,47 @@
 ## Technical
 
 <details>
-<summary></summary>
+<summary>왕복 이동 플랫폼 (Move Platform)</summary>
   
-  - 
+  - Mathf.Cos(theta) 기반의 왕복 이동 로직으로 수평/수직 플랫폼 이동 구현
+  - speed와 power 값으로 속도와 이동 범위를 손쉽게 조정 가능하도록 구현
+  - Time.deltaTime 기반의 계산으로 프레임 환경과 무관한 부드러운 이동 지원
+  - 단순한 구조로 유지 보수와 커스터마이징에 용이하도록 구현
   
+</details>
+
+<details>
+<summary>점프 플랫폼 (Push Platform)</summary>
+  
+  - 유저가 플랫폼 트리거에 진입 시 위쪽에 힘을 즉시 가해 점프 동작 구현
+  - Animator 트리거와 연동해 플랫폼 애니메이션을 자연스럽게 재생
+  - pushPower를 조절해 다양한 강도의 점프 연출 가능
+  
+</details>
+
+<details>
+<summary>사다리 (Ladder)</summary>
+
+  - 유저가 사다리 범위에 진입 시 중력을 0으로 전환해 캐릭터가 자연스럽게 사다리에 고정되도록 구현
+  - 상/하 입력에 따라 Y축 이동을 지원하여 부드럽고 자유로운 상하 이동 가능
+  - 사다리 범위를 벗어나면 중력을 복원해 정상적인 이동 상태로 매끄럽게 전환
+  - 단순한 상태 플래그(isLadder)로 캐릭터 상태를 관리하여 유지 보수와 확장이 용이
+
+</details>
+
+<details>
+<summary>동굴 연출 시스템</summary>
+  
+  - 유저가 동굴 트리거에 진입하면 카메라 크기를 조절해 자연스러운 줌인/줌아웃 연출 구현
+  - 동굴 진입 시 Global Light 비활성화하고 유저 주변에만 빛을 비춰 스포트라이트 효과로 몰입감 강화
+  - 동굴 트리거 기반으로 진입/이탈을 감지해 조명, 카메라, 캐릭터 상태를 원복하여 부드러운 전환 제공  
+    
 </details>
 
 <br><br>
 
 ## Known Issues & Solutions
 
-<details>
-<summary></summary>
-  
-  - 
-  
-</details>
 
 <br><br>
 
