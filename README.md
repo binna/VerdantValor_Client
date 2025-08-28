@@ -299,6 +299,8 @@
   - [MonsterDie](https://pixabay.com/sound-effects/super-deep-growl-86749/) → 몬스터 사망 효과음
     
   - [ItemPickup](https://pixabay.com/sound-effects/item-pickup-37089/) → 아이템 획득 효과음
+    
+  - [LevelUp](https://pixabay.com/sound-effects/game-level-complete-143022/) → 레벨업 효과음
   
 - Asset Store
   - [TownBGM](https://assetstore.unity.com/packages/audio/music/electronic/8-bit-rpg-adventure-music-pack-184726), Track: 04 Overworld → 마을 배경 음악  
