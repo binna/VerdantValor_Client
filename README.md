@@ -9,10 +9,10 @@
 ## 목차
 
 1. [게임소개](#게임소개) 
-2. [Scene Flow](#scene-flow)
+2. [씬 플로우](#씬-플로우)
 3. [주요기능](#주요기능)
-4. [Player Balance](#player-balance)
-5. [Monster Balance](#monster-balance)
+4. [유저 밸런스](#유저-밸런스)
+5. [몬스터 밸런스](#몬스터-밸런스)
 6. [기술스택](#기술스택)
 7. [기술적 구현](#기술적-구현)
 8. [이슈](#이슈)
@@ -51,7 +51,7 @@
 <br><br>
 
 
-## Scene Flow
+## 씬 플로우
 <img width="903" height="707" alt="image" src="https://github.com/user-attachments/assets/4673a9d5-ad31-4952-bdf3-205f54eb477a" />
 
 
@@ -59,35 +59,37 @@
 
 
 ## 주요기능
-1.  **조이스틱 방식 (*Joystick Control Style*)**  
-   마을에서는 조이스틱으로 이동을 수행
+1.  **조이스틱**  
+   마을에서는 조이스틱으로 이동 수행
 
-2. **키보드 방식 (*Keyboard Control Style*)**  
-   전투 공간에서는 키보드 조작으로 수행
+2. **키보드**  
+   전투 공간에서는 키보드으로 이동 수행
 
-3. **실시간 전투 시스템 (*Real-Time Combat System*)**  
+3. **실시간 전투 시스템**  
    회피, 공격, 피격 애니메이션을 포함하며, 시간 정지 없이 진행되는 액션 중심 전투
 
-4. **적 AI 시스템 (*Enemy AI System*)**  
+4. **적 AI 시스템**  
    FSM 기반 상태 로직 적용  
    시야각 및 거리 조건을 만족하면 공격 수행
 
-5. **마을 복귀 시스템 (*Return to Village*)**  
+5. **마을 복귀 시스템**  
    전투 중 사망 시 자동으로 마을 위치로 복귀
 
-6. **인벤토리 (*Inventory*)**  
-   간단한 인벤토리 UI 제공  
+6. **인벤토리**  
+   인벤토리 UI 제공  
    아이템 획득 및 소비 가능
 
-8. **유저 정보 저장 (*User Information Save*)**  
-   유저의 레벨, 소지한 재화 정보 저장
+7. **유저 정보 JSON 파일 저장**  
+   유저의 레벨, 소지한 아이템 및 재화 정보 저장
 
-9. **타일맵 기반 맵 디자인 (*Tilemap-Based Map Design*)**  
+8. **타일맵 기반 맵 디자인**  
    Tilemap 시스템을 활용한 유연한 공간 설계
+
 
 <br><br>
 
-## Player Balance
+
+## 유저 밸런스
 
 | Level | HP  | ATK | 누적 경험치 (EXP) |
 |-------|-----|-----|------------|
@@ -97,9 +99,11 @@
 | 4     | 300 | 5.0 | 1200       |
 | 5     | 400 | 6.0 | 2000       |
 
+
 <br><br>
 
-## Monster Balance
+
+## 몬스터 밸런스
 
 | 몬스터       | HP   | Speed | Attack Time | Damage | Trace Distance | Attack Distance | 특징                  | 획득 경험치 (EXP) |
 |--------------|------|-------|-------------|--------|----------------|-----------------|-----------------------|----|
@@ -108,7 +112,9 @@
 | Mushroom     | 35f  | 0.8f  | 3f          | 2f     | 4f             | 1f              | 느리고 단단한 탱커   | 20 |
 | Skeleton     | 15f  | 1.5f  | 1.8f        | 4f     | 6f             | 1.3f            | 공격력 높지만 체력 약함   | 15 |
 
+
 <br><br>
+
 
 ## 기술스택
 
@@ -118,12 +124,15 @@
 | Language | C# |
 | IDE | JetBrains Rider |
 
+
 <br><br>
+
+
 
 ## 기술적 구현
 
 <details>
-<summary>왕복 이동 플랫폼 (Move Platform)</summary>
+<summary>왕복 이동 플랫폼</summary>
   
   - Mathf.Cos(`theta`) 기반의 왕복 이동 로직으로 수평/수직 플랫폼 이동 구현
   - `speed`와 `power` 값으로 속도와 이동 범위를 손쉽게 조정 가능하도록 구현
@@ -133,7 +142,7 @@
 </details>
 
 <details>
-<summary>점프 플랫폼 (Push Platform)</summary>
+<summary>점프 플랫폼</summary>
   
   - 유저가 플랫폼 트리거에 진입 시 위쪽에 힘을 즉시 가해 점프 동작 구현
   - Animator 트리거와 연동해 플랫폼 애니메이션을 자연스럽게 재생
@@ -142,7 +151,7 @@
 </details>
 
 <details>
-<summary>사다리 (Ladder)</summary>
+<summary>사다리</summary>
 
   - 유저가 사다리 범위에 진입 시 중력을 0으로 전환해 캐릭터가 자연스럽게 사다리에 고정되도록 구현
   - 상/하 입력에 따라 Y축 이동을 지원하여 부드럽고 자유로운 상하 이동 가능
@@ -300,7 +309,7 @@
     
   - [LevelUp](https://pixabay.com/sound-effects/game-level-complete-143022/) → 레벨업 효과음
   
-- Asset Store
+- [Asset Store](https://assetstore.unity.com)
   - [TownBGM](https://assetstore.unity.com/packages/audio/music/electronic/8-bit-rpg-adventure-music-pack-184726), Track: 04 Overworld → 마을 배경 음악  
 
 <br><br>
