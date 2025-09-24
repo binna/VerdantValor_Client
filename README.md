@@ -1,70 +1,64 @@
-# 🌿⚔️ Verdant Valor 
+# Verdant Valor (2025.07.01 ~ 2025.08.29)
 
 ![image](https://github.com/user-attachments/assets/9bacff69-a94f-4ae6-a570-01383085a5fc)
 
----
-
-## 🌿 About the Title
-**Verdant Valor** = 🌿 Verdant (푸르른 숲, 생명력) + 🛡 Valor (용기, 전사의 용맹)  
-→ 자연 속에서 싸우는 기사들의 모험을 상징하는 이름
-
----
 
 <br><br>
 
-<p align="center">
-  <b>⚔️ 2D Action RPG – A Knight’s Adventure Unfolding in a Mysterious Forest 🌲</b> <br>
-  <i>2D 전투 RPG – 신비한 숲에서 펼쳐지는 기사의 모험</i>
-</p>
 
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=jal_0tfmpjY" target="_blank">
-    🎥 <b>Watch Gameplay on YouTube</b>
-  </a>
-</p>
+## 목차
 
-<br><br>
+1. [게임소개](#게임소개) 
+2. [Scene Flow](#scene-flow)
+3. [주요기능](#주요기능)
+4. [Player Balance](#player-balance)
+5. [Monster Balance](#monster-balance)
+6. [기술스택](#기술스택)
+7. [기술적 구현](#기술적-구현)
+8. [이슈](#이슈)
+9. [아트 리소스](#아트-리소스)
+10. [사운드 리소스](#사운드-리소스)
 
-<hr>
-
-## 📑 Table of Contents
-
-1. 🎮 [Gameplay](#gameplay)
-2. 🗺️ [Scene Flow](#scene-flow)
-3. 🧭 [Main Feature](#main-feature)
-4. 🧙 [Player Balance](#player-balance)
-5. 👾 [Monster Balance](#monster-balance)
-6. 🛠️ [Tech Stack](#tech-stack)
-7. 🧪 [Technical](#technical)
-8. 🐞 [Known Issues & Solutions](#known-issues--solutions)
-9. 🎨 [Art Resources](#art-resources)
-10. 🎵 [Sound Resources](#sound-resources)
-
-<hr>
 
 <br><br>
 
-## Gameplay
-- **A 2D RPG that begins in a peaceful village and unfolds into battles deep within a mysterious forest.**  
-  _마을에서 여정을 시작해, 숲속 깊은 곳에서 펼쳐지는 전투를 담은 2D RPG_
+
+## 게임소개
+
+> 2D 전투 RPG – 신비한 숲에서 펼쳐지는 기사의 모험
+
+<br>
+
+- **프로젝트 이름 의미**  
+  - Verdant = 푸른 숲, 생명력  
+  - Valor = 용기, 전사의 용맹
+  
+  Verdant Valor는 자연 속에서 싸우는 기사들의 모험을 상징하는 이름입니다.
+
+<br>
 
 - **조작법**
-  - 공격: `Alt`
-    
-  - 점프: `Ctrl`
-    
-  - 이동: `←`, `→` (방향키)
-    
+  - 공격: `Alt`  
+  - 점프: `Ctrl`  
+  - 이동: `←`, `→` (방향키)  
   - 숙이기: `↓` (방향키)
+ 
+<br>
+
+- [**📽️ 시연 영상 보기**](https://www.youtube.com/watch?v=jal_0tfmpjY)
+
   
 <br><br>
+
 
 ## Scene Flow
 <img width="903" height="707" alt="image" src="https://github.com/user-attachments/assets/4673a9d5-ad31-4952-bdf3-205f54eb477a" />
 
+
 <br><br>
 
-## Main Feature
+
+## 주요기능
 1.  **조이스틱 방식 (*Joystick Control Style*)**  
    마을에서는 조이스틱으로 이동을 수행
 
@@ -116,7 +110,7 @@
 
 <br><br>
 
-## Tech Stack
+## 기술스택
 
 | 항목 | 내용 |
 |------|------|
@@ -126,7 +120,7 @@
 
 <br><br>
 
-## Technical
+## 기술적 구현
 
 <details>
 <summary>왕복 이동 플랫폼 (Move Platform)</summary>
@@ -168,7 +162,7 @@
 
 <br><br>
 
-## Known Issues & Solutions
+## 이슈
 
 <details>
 <summary>씬 이동 시 데이터 초기화 문제</summary>
@@ -255,9 +249,11 @@
 
 </details>
 
+
 <br><br>
 
-## Art Resources
+
+## 아트 리소스
 
 - `Art/fonts/BMJUA` → [배민 주아체](https://noonnu.cc/font_page/53)
   
@@ -283,9 +279,11 @@
  
 - `몬스터` → [Asset Store](https://assetstore.unity.com/packages/2d/characters/monsters-creatures-fantasy-167949)
 
+
 <br><br>
 
-## Sound Resources
+
+## 사운드 리소스
 
 - [Pixabay](https://pixabay.com)
   - [IntroBGM](https://pixabay.com/music/solo-instruments-magic-forest-318165/) → 인트로 배경 음악
@@ -310,11 +308,11 @@
 ---
 
 <div align="center">
-  
-⭐ **Thanks for taking a look at Verdant Valor!** ⭐
 
-📌 **본 프로젝트는 개인 포트폴리오 용도로 제작되었습니다**  
-저작권 및 기타 문제되는 부분이 있을 경우  
-`every5116@naver.com` 으로 연락 주시면 신속히 대응하겠습니다
+   ⭐ **Thanks for taking a look at Meow Jump Game!** ⭐
 
+   📌 **본 프로젝트는 개인 포트폴리오 용도로 제작되었습니다**  
+   저작권 및 기타 문제되는 부분이 있을 경우  
+   `every5116@naver.com` 으로 연락 주시면 신속히 대응하겠습니다
+   
 </div>
