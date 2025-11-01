@@ -1,4 +1,4 @@
-# Verdant Valor (2025.07.01 ~ 2025.08.29)
+# Verdant Valor Client Project (2025.07.01 ~ 2025.08.29)
 
 ![image](https://github.com/user-attachments/assets/9bacff69-a94f-4ae6-a570-01383085a5fc)
 
