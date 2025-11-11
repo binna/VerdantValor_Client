@@ -50,7 +50,7 @@
 
 
 ## 씬 플로우
-<img width="903" height="707" alt="image" src="https://github.com/user-attachments/assets/4673a9d5-ad31-4952-bdf3-205f54eb477a" />
+<img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/4673a9d5-ad31-4952-bdf3-205f54eb477a" />
 
 
 <br><br>
